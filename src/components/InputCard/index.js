@@ -2,51 +2,57 @@ import React from "react"
 import PropTypes from "prop-types"
 import { withStyles } from "material-ui/styles"
 import Card, { CardActions, CardContent } from "material-ui/Card"
-import Button from "material-ui/Button"
-import Typography from "material-ui/Typography"
+import { Button, Input, Typography } from "material-ui"
 
-const styles = {
+const styles = theme => ({
   card: {
     minWidth: 275
   },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)"
+  input: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    display: "flex"
   },
-  title: {
-    marginBottom: 16,
-    fontSize: 14
+  actionButtonDone: {
+    marginLeft: "auto"
   },
-  pos: {
-    marginBottom: 12
+  headline: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit
   }
-}
+})
 
 const InputCard = props => {
-  const { classes } = props
-  const bull = <span className={classes.bullet}>•</span>
-
+  const { classes, onChange, onDone } = props
   return (
     <div>
       <Card className={classes.card}>
         <CardContent>
-          <Typography className={classes.title} color="textSecondary">
-            Word of the Day
+          <Typography
+            className={classes.headline}
+            gutterBottom
+            variant="headline"
+            component="h2"
+          >
+            {new Date(Date.now()).toLocaleTimeString("en-GB")}
           </Typography>
-          <Typography variant="headline" component="h2">
-            be{bull}nev{bull}o{bull}lent
-          </Typography>
-          <Typography className={classes.pos} color="textSecondary">
-            adjective
-          </Typography>
-          <Typography component="p">
-            well meaning and kindly.<br />
-            {'"a benevolent smile"'}
-          </Typography>
+          <Input
+            id="input"
+            disableUnderline
+            placeholder="Type here..."
+            multiline
+            className={classes.input}
+            onChange={onChange}
+          />
         </CardContent>
         <CardActions>
-          <Button size="small">Learn More</Button>
+          <Button
+            className={classes.actionButtonDone}
+            size="small"
+            onClick={() => onDone()}
+          >
+            Done
+          </Button>
         </CardActions>
       </Card>
     </div>
@@ -54,7 +60,8 @@ const InputCard = props => {
 }
 
 InputCard.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  onChange: PropTypes.func
 }
 
 export default withStyles(styles)(InputCard)
