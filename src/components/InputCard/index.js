@@ -19,11 +19,19 @@ const styles = theme => ({
   headline: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit
-  }
+  },
+  disabled: { color: "black" }
 })
 
 const InputCard = props => {
-  const { classes, onChange, onDone } = props
+  const {
+    classes,
+    onChange,
+    onDone,
+    disabled,
+    defaultValue,
+    onEditPress
+  } = props
   return (
     <div>
       <Card className={classes.card}>
@@ -43,15 +51,20 @@ const InputCard = props => {
             multiline
             className={classes.input}
             onChange={onChange}
+            disabled={disabled}
+            defaultValue={defaultValue}
+            classes={{
+              disabled: classes.disabled
+            }}
           />
         </CardContent>
         <CardActions>
           <Button
             className={classes.actionButtonDone}
             size="small"
-            onClick={() => onDone()}
+            onClick={() => (disabled ? onEditPress() : onDone())}
           >
-            Done
+            {disabled ? "Edit" : "Done"}
           </Button>
         </CardActions>
       </Card>
@@ -61,7 +74,18 @@ const InputCard = props => {
 
 InputCard.propTypes = {
   classes: PropTypes.object.isRequired,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  disabled: PropTypes.bool,
+  onDone: PropTypes.func,
+  defaultValue: PropTypes.string,
+  onEditPress: PropTypes.func
+}
+
+InputCard.defaultProps = {
+  onChange: () => null,
+  disabled: false,
+  onDone: () => null,
+  onEditPress: () => null
 }
 
 export default withStyles(styles)(InputCard)
