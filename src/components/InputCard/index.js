@@ -29,8 +29,9 @@ const InputCard = props => {
     onChange,
     onDone,
     disabled,
-    defaultValue,
-    onEditPress
+    value,
+    onEditPress,
+    title
   } = props
   return (
     <div>
@@ -42,7 +43,7 @@ const InputCard = props => {
             variant="headline"
             component="h2"
           >
-            {new Date(Date.now()).toLocaleTimeString("en-GB")}
+            {title}
           </Typography>
           <Input
             id="input"
@@ -52,7 +53,7 @@ const InputCard = props => {
             className={classes.input}
             onChange={onChange}
             disabled={disabled}
-            defaultValue={defaultValue}
+            value={value}
             classes={{
               disabled: classes.disabled
             }}
@@ -77,8 +78,9 @@ InputCard.propTypes = {
   onChange: PropTypes.func,
   disabled: PropTypes.bool,
   onDone: PropTypes.func,
-  defaultValue: PropTypes.string,
-  onEditPress: PropTypes.func
+  value: PropTypes.string,
+  onEditPress: PropTypes.func,
+  title: PropTypes.string
 }
 
 InputCard.defaultProps = {
