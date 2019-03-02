@@ -10,7 +10,6 @@ const App = () => {
   }
   useEffect(() => {
     getEntries()
-    console.log('hello')
   }, [])
 
   return <div className="container">{entries.map(entry => entry.text)}</div>
