@@ -3,10 +3,14 @@ import './App.css'
 
 const App = () => {
   const [entries, setEntries] = useState([])
+  const getEntries = async () => {
+    const response = await fetch('http://localhost:4000/entries.json')
+    const entries = await response.json()
+    setEntries(entries)
+  }
   useEffect(() => {
-    fetch('http://localhost:4000/entries.json', {})
-      .then(response => response.json())
-      .then(entries => setEntries(entries))
+    getEntries()
+    console.log('hello')
   }, [])
 
   return <div className="container">{entries.map(entry => entry.text)}</div>
