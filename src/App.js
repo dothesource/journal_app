@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import './App.css'
+import '@material/react-card/dist/card.css'
+
+import Card from '@material/react-card'
 
 const App = () => {
   const [entries, setEntries] = useState([])
@@ -14,7 +17,18 @@ const App = () => {
     getEntries()
   }, [])
 
-  return <div className="container">{entries.map(entry => entry.text)}</div>
+  return (
+    <div>
+      <div className="app-bar">
+        <div className="app-bar-title">Entries</div>
+      </div>
+      {entries.map(entry => (
+        <Card key={entry.id} className="card">
+          <p>{entry.text}</p>
+        </Card>
+      ))}
+    </div>
+  )
 }
 
 export default App

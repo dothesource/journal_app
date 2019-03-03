@@ -1,12 +1,20 @@
 body {
   font-family: 'Roboto';
 }
-.container {
-  display: grid;
-  text-align: center;
-  min-height: 100vh;
+.app-bar {
+  display: flex;
+  height: 56px;
+  background-color: #282c34;
+  align-items: center;
+  padding-left: 16px;
+}
+.app-bar-title {
+  margin-left: 16px;
+  color: white;
 }
 
-.app-bar {
-  background-color: #282c34;
+.card {
+  height: 344px;
+  margin: 16px;
+  padding: 16px;
 }
