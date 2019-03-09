@@ -1,12 +1,19 @@
 body {
   font-family: 'Roboto';
 }
+.container {
+  padding: 56px 0 56px 0;
+}
 .app-bar {
   display: flex;
   height: 56px;
   background-color: #282c34;
   align-items: center;
   padding-left: 16px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 .app-bar-title {
   margin-left: 16px;

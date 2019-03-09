@@ -20,8 +20,8 @@ const App = () => {
   }, [])
 
   return (
-    <div style={{ paddingBottom: '56px' }}>
-      <div className="app-bar">
+    <div className="container">
+      <div className="app-bar mdc-elevation--z4">
         <div className="app-bar-title">Entries</div>
       </div>
       {entries.map(entry => (
