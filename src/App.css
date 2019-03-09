@@ -18,3 +18,15 @@ body {
   margin: 16px;
   padding: 16px;
 }
+
+.footer-bar {
+  height: 56px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  align-items: center;
+  display: flex;
+  padding: 0 16px 0 16px;
+}

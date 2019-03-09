@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import './App.css'
 import '@material/react-card/dist/card.css'
-
+import '../node_modules/@material/elevation/dist/mdc.elevation.css'
 import Card from '@material/react-card'
 
 const App = () => {
@@ -9,6 +9,8 @@ const App = () => {
 
   const getEntries = async () => {
     const response = await fetch('http://localhost:4000/entries.json')
+    // const response = await fetch('http://192.168.1.67:4000/entries.json')
+
     const entries = await response.json()
     setEntries(entries)
   }
@@ -18,7 +20,7 @@ const App = () => {
   }, [])
 
   return (
-    <div>
+    <div style={{ paddingBottom: '56px' }}>
       <div className="app-bar">
         <div className="app-bar-title">Entries</div>
       </div>
@@ -27,6 +29,7 @@ const App = () => {
           <p>{entry.text}</p>
         </Card>
       ))}
+      <div className="footer-bar mdc-elevation--z4">Add an entry...</div>
     </div>
   )
 }
