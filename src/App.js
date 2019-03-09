@@ -19,7 +19,7 @@ const App = () => {
   const saveEntry = async () => {
     const response = await fetch('http://localhost:4000/entries.json', {
       method: 'POST',
-      body: { text: currentEntry }
+      body: JSON.stringify({ entry: { text: currentEntry } })
     })
     const responseJson = await response.json()
     console.log(responseJson)
