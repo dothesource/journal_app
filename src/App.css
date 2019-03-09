@@ -37,3 +37,9 @@ body {
   display: flex;
   padding: 0 16px 0 16px;
 }
+.input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 16px;
+}

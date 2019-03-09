@@ -8,11 +8,16 @@ const App = () => {
   const [entries, setEntries] = useState([])
 
   const getEntries = async () => {
-    const response = await fetch('http://localhost:4000/entries.json')
+    // const response = await fetch('http://localhost:4000/entries.json')
     // const response = await fetch('http://192.168.1.67:4000/entries.json')
 
-    const entries = await response.json()
-    setEntries(entries)
+    // const entries = await response.json()
+    // setEntries(entries)
+    setEntries([
+      { id: 1, text: 'test' },
+      { id: 2, text: 'example' },
+      { id: 3, text: 'other' }
+    ])
   }
 
   useEffect(() => {
@@ -29,7 +34,9 @@ const App = () => {
           <p>{entry.text}</p>
         </Card>
       ))}
-      <div className="footer-bar mdc-elevation--z4">Add an entry...</div>
+      <div className="footer-bar mdc-elevation--z4">
+        <input type="text" placeholder="Add an entry..." className="input" />
+      </div>
     </div>
   )
 }
