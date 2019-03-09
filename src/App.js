@@ -19,10 +19,13 @@ const App = () => {
   const saveEntry = async () => {
     const response = await fetch('http://localhost:4000/entries.json', {
       method: 'POST',
-      body: JSON.stringify({ entry: { text: currentEntry } })
+      body: JSON.stringify({ entry: { text: currentEntry } }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
     })
     const responseJson = await response.json()
-    console.log(responseJson)
+    setEntries([...entries, responseJson])
   }
 
   useEffect(() => {
