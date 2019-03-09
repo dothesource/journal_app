@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react'
 import './App.css'
 import '@material/react-card/dist/card.css'
 import '@material/elevation/dist/mdc.elevation.css'
-import Card from '@material/react-card'
+import Card, {
+  CardActions,
+  CardActionIcons,
+  CardPrimaryContent
+} from '@material/react-card'
 
 const App = () => {
   const [entries, setEntries] = useState([])
@@ -16,6 +20,15 @@ const App = () => {
   const handleInputChange = event => {
     setCurrentEntry(event.target.value)
   }
+
+  const deleteEntry = entry => {
+    fetch(`http://localhost:4000/entries/${entry.id}`, {
+      method: 'DELETE'
+    }).then(() => {
+      setEntries(entries.filter(e => entry.id !== e.id))
+    })
+  }
+
   const saveEntry = async () => {
     const response = await fetch('http://localhost:4000/entries.json', {
       method: 'POST',
@@ -39,7 +52,16 @@ const App = () => {
       </div>
       {entries.map(entry => (
         <Card key={entry.id} className="card">
-          <p>{entry.text}</p>
+          <CardPrimaryContent>
+            <p>{entry.text}</p>
+          </CardPrimaryContent>
+          <CardActions>
+            <CardActionIcons>
+              <i onClick={() => deleteEntry(entry)} className="material-icons">
+                delete
+              </i>
+            </CardActionIcons>
+          </CardActions>
         </Card>
       ))}
       <div className="footer-bar mdc-elevation--z4">

@@ -21,7 +21,7 @@ body {
 }
 
 .card {
-  height: 344px;
+  min-height: 56px;
   margin: 16px;
   padding: 16px;
 }
