@@ -2,7 +2,7 @@ body {
   font-family: 'Roboto';
 }
 .container {
-  padding: 56px 0 56px 0;
+  padding: 56px 16px 56px 16px;
 }
 .app-bar {
   display: flex;
@@ -22,7 +22,7 @@ body {
 
 .card {
   min-height: 56px;
-  margin: 16px;
+  margin: 16px 0;
   padding: 16px;
 }
 
