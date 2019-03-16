@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './App.css'
 
 import '@material/elevation/dist/mdc.elevation.css'
 import Entry from './components/Entry'
 
 const App = () => {
+  const pageEndRef = useRef()
   const [entries, setEntries] = useState([])
   const [currentEntry, setCurrentEntry] = useState('')
   const getEntries = async () => {
@@ -39,6 +40,7 @@ const App = () => {
       .then(json => {
         setEntries([...entries, json])
         setCurrentEntry('')
+        pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
       })
   }
 
@@ -63,6 +65,7 @@ const App = () => {
       {entries.map(entry => (
         <Entry key={entry.id} entry={entry} deleteEntry={deleteEntry} />
       ))}
+      <div style={{ float: 'left', clear: 'both' }} ref={pageEndRef} />
       <div className="footer-bar mdc-elevation--z4">
         <input
           type="text"
