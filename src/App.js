@@ -19,8 +19,11 @@ const App = () => {
   }
 
   const deleteEntry = entry => {
-    fetch(`http://localhost:4000/entries/${entry.id}`, {
-      method: 'DELETE'
+    fetch(`http://localhost:4000/entries/${entry.id}.json`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
     }).then(() => {
       setEntries(entries.filter(e => entry.id !== e.id))
     })
