@@ -6,7 +6,8 @@
     "@material/react-card": "^0.10.0",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
-    "react-scripts": "2.1.5"
+    "react-scripts": "2.1.5",
+    "react-textarea-autosize": "^7.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
