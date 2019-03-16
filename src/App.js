@@ -82,7 +82,7 @@ const App = () => {
         <div className="app-bar-title">Entries</div>
       </div>
       {days.map(day => (
-        <Day key={day.id} day={day} deleteEntry={deleteEntry} />
+        <Day key={`day-${day.id}`} day={day} deleteEntry={deleteEntry} />
       ))}
       <div style={{ float: 'left', clear: 'both' }} ref={pageEndRef} />
       <div className="footer-bar mdc-elevation--z4">

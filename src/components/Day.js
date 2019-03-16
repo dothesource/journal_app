@@ -7,7 +7,11 @@ const Day = ({ day, deleteEntry }) => {
       {day &&
         day.entries &&
         day.entries.map(entry => (
-          <Entry key={entry.id} entry={entry} deleteEntry={deleteEntry} />
+          <Entry
+            key={`entry-${entry.id}`}
+            entry={entry}
+            deleteEntry={deleteEntry}
+          />
         ))}
     </React.Fragment>
   )
