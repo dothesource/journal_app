@@ -2,30 +2,41 @@ import React, { useState, useEffect, useRef } from 'react'
 import './App.css'
 
 import '@material/elevation/dist/mdc.elevation.css'
-import Entry from './components/Entry'
+import Day from './components/Day'
 
 const App = () => {
   const pageEndRef = useRef()
-  const [entries, setEntries] = useState([])
+  const [days, setDays] = useState([])
   const [currentEntry, setCurrentEntry] = useState('')
-  const getEntries = async () => {
-    const response = await fetch('http://localhost:4000/entries.json')
-    const entries = await response.json()
-    setEntries(entries)
+  const getDays = async () => {
+    fetch('http://localhost:4000/days.json')
+      .then(response => response.json())
+      .then(days => {
+        setDays(days)
+        pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
+      })
   }
 
   const handleInputChange = event => {
     setCurrentEntry(event.target.value)
   }
 
-  const deleteEntry = entry => {
+  const deleteEntry = (entry, day) => {
     fetch(`http://localhost:4000/entries/${entry.id}.json`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
       }
-    }).then(() => {
-      setEntries(entries.filter(e => entry.id !== e.id))
+    }).then(day => {
+      console.log(day)
+      const days_for_update = [...days]
+      const index = days_for_update.findIndex(d => d.id === day.id)
+      if (index !== -1) {
+        days_for_update[index] = day
+      } else {
+        days_for_update.push(day)
+      }
+      setDays(days_for_update)
     })
   }
 
@@ -40,18 +51,22 @@ const App = () => {
       .then(response => {
         return response.json()
       })
-      .then(json => {
-        setEntries([...entries, json])
+      .then(day => {
+        const days_for_update = [...days]
+        const index = days_for_update.findIndex(d => d.id === day.id)
+        if (index !== -1) {
+          days_for_update[index] = day
+        } else {
+          days_for_update.push(day)
+        }
+        setDays(days_for_update)
         setCurrentEntry('')
         pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
       })
   }
 
   useEffect(() => {
-    fetch('http://localhost:4000/days.json', response => {
-      return response.json()
-    }).then(json => console.log(json))
-    getEntries()
+    getDays()
   }, [])
 
   const _handleKeyPress = e => {
@@ -65,8 +80,8 @@ const App = () => {
       <div className="app-bar mdc-elevation--z4">
         <div className="app-bar-title">Entries</div>
       </div>
-      {entries.map(entry => (
-        <Entry key={entry.id} entry={entry} deleteEntry={deleteEntry} />
+      {days.map(day => (
+        <Day key={day.id} day={day} deleteEntry={deleteEntry} />
       ))}
       <div style={{ float: 'left', clear: 'both' }} ref={pageEndRef} />
       <div className="footer-bar mdc-elevation--z4">
