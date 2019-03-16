@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import './App.css'
-import '@material/react-card/dist/card.css'
+
 import '@material/elevation/dist/mdc.elevation.css'
-import Card, {
-  CardActions,
-  CardActionIcons,
-  CardPrimaryContent
-} from '@material/react-card'
+import Entry from './components/Entry'
 
 const App = () => {
   const [entries, setEntries] = useState([])
@@ -29,21 +25,35 @@ const App = () => {
     })
   }
 
-  const saveEntry = async () => {
-    const response = await fetch('http://localhost:4000/entries.json', {
+  const saveEntry = () => {
+    fetch('http://localhost:4000/entries.json', {
       method: 'POST',
       body: JSON.stringify({ entry: { text: currentEntry } }),
       headers: {
         'Content-Type': 'application/json'
       }
     })
-    const responseJson = await response.json()
-    setEntries([...entries, responseJson])
+      .then(response => {
+        return response.json()
+      })
+      .then(json => {
+        setEntries([...entries, json])
+        setCurrentEntry('')
+      })
   }
 
   useEffect(() => {
+    fetch('http://localhost:4000/days.json', response => {
+      return response.json()
+    }).then(json => console.log(json))
     getEntries()
   }, [])
+
+  const _handleKeyPress = e => {
+    if (e.key === 'Enter') {
+      saveEntry()
+    }
+  }
 
   return (
     <div className="container">
@@ -51,18 +61,7 @@ const App = () => {
         <div className="app-bar-title">Entries</div>
       </div>
       {entries.map(entry => (
-        <Card key={entry.id} className="card">
-          <CardPrimaryContent>
-            <p>{entry.text}</p>
-          </CardPrimaryContent>
-          <CardActions>
-            <CardActionIcons>
-              <i onClick={() => deleteEntry(entry)} className="material-icons">
-                delete
-              </i>
-            </CardActionIcons>
-          </CardActions>
-        </Card>
+        <Entry key={entry.id} entry={entry} deleteEntry={deleteEntry} />
       ))}
       <div className="footer-bar mdc-elevation--z4">
         <input
@@ -70,6 +69,8 @@ const App = () => {
           placeholder="Add an entry..."
           className="input"
           onChange={handleInputChange}
+          onKeyPress={_handleKeyPress}
+          value={currentEntry}
         />
         <i onClick={saveEntry} className="icon material-icons">
           send
