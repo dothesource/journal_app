@@ -21,23 +21,24 @@ const App = () => {
     setCurrentEntry(event.target.value)
   }
 
-  const deleteEntry = (entry, day) => {
+  const deleteEntry = entry => {
     fetch(`http://localhost:4000/entries/${entry.id}.json`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
       }
-    }).then(day => {
-      console.log(day)
-      const days_for_update = [...days]
-      const index = days_for_update.findIndex(d => d.id === day.id)
-      if (index !== -1) {
-        days_for_update[index] = day
-      } else {
-        days_for_update.push(day)
-      }
-      setDays(days_for_update)
     })
+      .then(response => response.json())
+      .then(day => {
+        const days_for_update = [...days]
+        const index = days_for_update.findIndex(d => d.id === day.id)
+        if (index !== -1) {
+          days_for_update[index] = day
+        } else {
+          days_for_update.push(day)
+        }
+        setDays(days_for_update)
+      })
   }
 
   const saveEntry = () => {
