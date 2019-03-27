@@ -1,13 +1,33 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import Card, { CardActions, CardActionIcons } from '@material/react-card'
 import '@material/react-card/dist/card.css'
 import TextareaAutosize from 'react-textarea-autosize'
-
-const Entry = ({ entry, deleteEntry }) => {
+import useDebounce from '../utils/use_debounce'
+const Entry = ({ entry, deleteEntry, updateEntryText }) => {
+  const inputRef = useRef(null)
+  const focusTextArea = () => {
+    inputRef.current.focus()
+  }
   const [text, setText] = useState(entry.text)
+  const [isSaving, setIsSaving] = useState(false)
+
+  const debouncedTextEdit = useDebounce(text, 500)
+  useEffect(
+    () => {
+      if (debouncedTextEdit && text !== entry.text) {
+        setIsSaving(true)
+        updateEntryText(entry, debouncedTextEdit).then(() => {
+          setIsSaving(false)
+        })
+      }
+    },
+    [debouncedTextEdit] // Only call effect if debounced search term changes
+  )
+
   return (
-    <Card className="card">
+    <Card className="card" onClick={focusTextArea}>
       <TextareaAutosize
+        inputRef={inputRef}
         useCacheForDOMMeasurements
         style={{
           outline: 'none',
@@ -18,7 +38,6 @@ const Entry = ({ entry, deleteEntry }) => {
         }}
         onChange={({ target: { value } }) => {
           setText(value)
-          console.log(value)
         }}
         defaultValue={text}
       />

@@ -854,6 +854,13 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
+"@callstack/async-storage@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@callstack/async-storage/-/async-storage-1.1.0.tgz#f7d66c7b330bf5eba65dfb3c236f62cbf4aa42b0"
+  integrity sha1-99ZsezML9eumXfs8I29iy/SqQrA=
+  dependencies:
+    lodash.merge "^4.6.0"
+
 "@csstools/convert-colors@^1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
@@ -5950,6 +5957,11 @@ lodash.memoize@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
   integrity sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=
+
+lodash.merge@^4.6.0:
+  version "4.6.1"
+  resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.1.tgz#adc25d9cb99b9391c59624f379fbba60d7111d54"
+  integrity sha512-AOYza4+Hf5z1/0Hztxpm2/xiPZgi/cjMqdnKTUWTBSKchJlxXXuUSxCCl8rJlf4g6yww/j6mA8nC8Hw/EZWxKQ==
 
 lodash.sortby@^4.7.0:
   version "4.7.0"

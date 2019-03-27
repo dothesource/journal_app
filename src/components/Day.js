@@ -1,6 +1,6 @@
 import React from 'react'
 import Entry from './Entry'
-const Day = ({ day, deleteEntry }) => {
+const Day = ({ day, deleteEntry, updateEntryText }) => {
   return (
     <React.Fragment>
       <h5>{day.title}</h5>
@@ -11,6 +11,7 @@ const Day = ({ day, deleteEntry }) => {
             key={`entry-${entry.id}`}
             entry={entry}
             deleteEntry={deleteEntry}
+            updateEntryText={updateEntryText}
           />
         ))}
     </React.Fragment>
