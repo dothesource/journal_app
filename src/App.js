@@ -72,6 +72,38 @@ const App = () => {
     })
   }
 
+  const archiveEntry = entry => {
+    makeRequest({ path: `entries/${entry.id}/archive.json`, method: 'PUT' }).then(
+      day => {
+        const days_for_update = [...days]
+        const index = days_for_update.findIndex(d => d.id === day.id)
+        if (index !== -1) {
+          days_for_update[index] = day
+        } else {
+          days_for_update.push(day)
+        }
+        setDays(days_for_update)
+        setCached('days', days_for_update)
+      }
+    )
+  }
+
+  const unarchiveEntry = entry => {
+    makeRequest({ path: `entries/${entry.id}/unarchive.json`, method: 'PUT' }).then(
+      day => {
+        const days_for_update = [...days]
+        const index = days_for_update.findIndex(d => d.id === day.id)
+        if (index !== -1) {
+          days_for_update[index] = day
+        } else {
+          days_for_update.push(day)
+        }
+        setDays(days_for_update)
+        setCached('days', days_for_update)
+      }
+    )
+  }
+
   useEffect(() => {
     getDays()
   }, [])
@@ -93,6 +125,8 @@ const App = () => {
           day={day}
           deleteEntry={deleteEntry}
           updateEntryText={updateEntryText}
+          archiveEntry={archiveEntry}
+          unarchiveEntry={unarchiveEntry}
         />
       ))}
       <div style={{ float: 'left', clear: 'both' }} ref={pageEndRef} />
