@@ -11,29 +11,38 @@ const Entry = ({
   unarchiveEntry,
   isArchived
 }) => {
+  const [focused, setFocused] = useState(false)
   const inputRef = useRef(null)
   const focusTextArea = () => {
     inputRef.current.focus()
   }
   const [text, setText] = useState(entry.text)
-  const [isSaving, setIsSaving] = useState(false)
-
   const debouncedTextEdit = useDebounce(text, 500)
-  useEffect(
-    () => {
-      if (debouncedTextEdit && text !== entry.text) {
-        setIsSaving(true)
-        updateEntryText(entry, debouncedTextEdit).then(() => {
-          setIsSaving(false)
-        })
-      }
-    },
-    [debouncedTextEdit] // Only call effect if debounced search term changes
-  )
+
+  useEffect(() => {
+    if (debouncedTextEdit && text !== entry.text && focused) {
+      updateEntryText(entry, debouncedTextEdit)
+    }
+  }, [debouncedTextEdit])
+
+  useEffect(() => {
+    if (entry.text !== text && focused === false) {
+      console.log(text)
+      setText(entry.text)
+    }
+  })
+  const onFocus = () => {
+    setFocused(true)
+  }
+  const onBlur = () => {
+    setFocused(false)
+  }
 
   return (
     <Card className="card" onClick={focusTextArea}>
       <TextareaAutosize
+        onFocus={onFocus}
+        onBlur={onBlur}
         inputRef={inputRef}
         useCacheForDOMMeasurements
         style={{
@@ -46,7 +55,7 @@ const Entry = ({
         onChange={({ target: { value } }) => {
           setText(value)
         }}
-        defaultValue={text}
+        value={text}
       />
       <CardActions>
         <CardActionIcons>
