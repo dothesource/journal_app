@@ -3,7 +3,7 @@ import Card, { CardActions, CardActionIcons } from '@material/react-card'
 import '@material/react-card/dist/card.css'
 import TextareaAutosize from 'react-textarea-autosize'
 import useDebounce from '../utils/use_debounce'
-const Entry = ({ entry, deleteEntry, updateEntryText, archiveEntry, unarchiveEntry }) => {
+const Entry = ({ entry, deleteEntry, updateEntryText, archiveEntry, unarchiveEntry, isArchived }) => {
   const inputRef = useRef(null)
   const focusTextArea = () => {
     inputRef.current.focus()
@@ -46,9 +46,20 @@ const Entry = ({ entry, deleteEntry, updateEntryText, archiveEntry, unarchiveEnt
           <i onClick={() => deleteEntry(entry)} className="material-icons">
             delete
           </i>
-          <i onClick={() => archiveEntry(entry)} className="material-icons">
-            archive
-          </i>
+
+          {
+            !isArchived &&
+            <i onClick={() => archiveEntry(entry)} className="material-icons">
+              archive
+            </i>
+          }
+
+          {
+            isArchived &&
+            <i onClick={() => unarchiveEntry(entry)} className="material-icons">
+              unarchive
+            </i>
+          }
 
         </CardActionIcons>
       </CardActions>

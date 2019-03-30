@@ -14,6 +14,7 @@ const Day = ({ day, deleteEntry, updateEntryText, archiveEntry, unarchiveEntry }
             updateEntryText={updateEntryText}
             archiveEntry={archiveEntry}
             unarchiveEntry={unarchiveEntry}
+            isArchived={entry.archived_at}
           />
         ))}
     </React.Fragment>
