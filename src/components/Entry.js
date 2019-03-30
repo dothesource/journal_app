@@ -46,21 +46,17 @@ const Entry = ({ entry, deleteEntry, updateEntryText, archiveEntry, unarchiveEnt
           <i onClick={() => deleteEntry(entry)} className="material-icons">
             delete
           </i>
-
           {
-            !isArchived &&
-            <i onClick={() => archiveEntry(entry)} className="material-icons">
-              archive
-            </i>
+            isArchived ? (
+              <i onClick={() => unarchiveEntry(entry)} className="material-icons">
+                unarchive
+              </i>
+            ) : (
+              <i onClick={() => archiveEntry(entry)} className="material-icons">
+                archive
+              </i>
+            )
           }
-
-          {
-            isArchived &&
-            <i onClick={() => unarchiveEntry(entry)} className="material-icons">
-              unarchive
-            </i>
-          }
-
         </CardActionIcons>
       </CardActions>
     </Card>
