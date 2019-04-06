@@ -5,6 +5,8 @@ import '@material/elevation/dist/mdc.elevation.css'
 import Day from '../../components/Day'
 import { last } from '../../utils/generic'
 
+const NEW_ENTRY_DELAY = 5 * 60 * 1000
+
 const Days = () => {
   const pageEndRef = useRef()
   const [shouldCreateNewEntry, setShouldCreateNewEntry] = useState(true)
@@ -127,18 +129,24 @@ const Days = () => {
     saveEntry()
   }
 
-  const [timeout, setCreateTimeout] = useState()
+  const timeOutRef = useRef(null)
+  const delayNewEntry = () => {
+    if (timeOutRef.current) {
+      clearTimeout(timeOutRef.current)
+    }
+    timeOutRef.current = setTimeout(() => {
+      setShouldCreateNewEntry(true)
+    }, NEW_ENTRY_DELAY)
+  }
   const _handleKeyPress = e => {
+    if (shouldCreateNewEntry === false) {
+      delayNewEntry()
+    }
     if (e.key === 'Enter' && focused) {
       if (shouldCreateNewEntry === true) {
         saveEntry()
       } else {
         updatePreviousEntry()
-        clearTimeout(timeout)
-        const timeoutHandler = setTimeout(() => {
-          setShouldCreateNewEntry(true)
-        }, 1000 * 60 * 5)
-        setCreateTimeout(timeoutHandler)
       }
     }
   }
