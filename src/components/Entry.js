@@ -37,12 +37,34 @@ const Entry = ({
     setFocused(false)
   }
 
-  let archiveButton, unarchiveButton, deleteButton;
-  if(isArchived) {
-    unarchiveButton = (<i onClick={() => unarchiveEntry(entry)} className="material-icons">unarchive</i>);
-    deleteButton = (<i onClick={() => deleteEntry(entry)} className="material-icons">delete</i>);
-  } else {
-    archiveButton = (<i onClick={() => archiveEntry(entry)} className="material-icons">archive</i>);
+  const cardActionButtons = () => {
+    if (isArchived) {
+      return (
+        <React.Fragment>
+          <i
+            onClick={() => unarchiveEntry(entry)}
+            className="card-icon material-icons"
+          >
+            unarchive
+          </i>
+          <i
+            onClick={() => deleteEntry(entry)}
+            className="card-icon material-icons"
+          >
+            delete
+          </i>
+        </React.Fragment>
+      )
+    } else {
+      return (
+        <i
+          onClick={() => archiveEntry(entry)}
+          className="card-icon material-icons"
+        >
+          archive
+        </i>
+      )
+    }
   }
 
   return (
@@ -65,11 +87,7 @@ const Entry = ({
         value={text}
       />
       <CardActions>
-        <CardActionIcons>
-          {archiveButton}
-          {unarchiveButton}
-          {deleteButton}
-        </CardActionIcons>
+        <CardActionIcons>{cardActionButtons()}</CardActionIcons>
       </CardActions>
     </Card>
   )

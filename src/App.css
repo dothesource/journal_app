@@ -57,6 +57,12 @@ body {
   cursor: pointer;
 }
 
+.card-icon {
+  color: grey;
+  padding: 8px;
+  cursor: pointer;
+}
+
 .material-icons {
   font-family: 'Material Icons';
   font-weight: normal;
