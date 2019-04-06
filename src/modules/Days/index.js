@@ -185,6 +185,11 @@ const Days = () => {
     <div className="container">
       <div className="app-bar mdc-elevation--z4">
         <div className="app-bar-title">Entries</div>
+        <div>
+          <i onClick={saveEntry} className="app-bar-icon material-icons">
+            add
+          </i>
+        </div>
       </div>
       {days.map(day => (
         <Day

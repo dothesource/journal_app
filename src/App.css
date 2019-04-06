@@ -18,6 +18,13 @@ body {
 .app-bar-title {
   margin-left: 16px;
   color: white;
+  flex: 1;
+}
+
+.app-bar-icon {
+  color: white;
+  padding: 16px;
+  cursor: pointer;
 }
 
 .card {
@@ -35,19 +42,18 @@ body {
   background-color: white;
   align-items: center;
   display: flex;
-  padding: 0 16px 0 16px;
 }
 .input {
   border: none;
   outline: none;
   width: 100%;
   font-size: 16px;
+  margin-left: 16px;
 }
+
 .icon {
   color: grey;
-  padding: 8px;
-  height: 24px;
-  width: 24px;
+  padding: 16px;
   cursor: pointer;
 }
 
