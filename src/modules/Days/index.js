@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import '../../App.css'
-import { makeRequest, setCached } from '../../utils/api'
+import { makeRequest } from '../../utils/api'
 import '@material/elevation/dist/mdc.elevation.css'
 import Day from '../../components/Day'
 import { last } from '../../utils/generic'
+import useKeyPress from '../../utils/use_key_press'
 
 const NEW_ENTRY_DELAY = 5 * 60 * 1000
 
@@ -15,6 +16,7 @@ const Days = () => {
   const getDays = async () => {
     makeRequest({ path: 'days.json', cacheId: 'days' }).then(days => {
       setDays(days)
+      // setCached('days', days)
       pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
     })
   }
@@ -34,7 +36,7 @@ const Days = () => {
           days_for_update.push(day)
         }
         setDays(days_for_update)
-        setCached('days', days_for_update)
+        // setCached('days', days_for_update)
       }
     )
   }
@@ -53,7 +55,7 @@ const Days = () => {
         days_for_update.push(day)
       }
       setDays(days_for_update)
-      setCached('days', days_for_update)
+      // setCached('days', days_for_update)
       setCurrentEntry('')
       pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
       setShouldCreateNewEntry(false)
@@ -73,7 +75,7 @@ const Days = () => {
     )
     entry_to_update.text = text
     setDays(days_for_update)
-    setCached('days', days_for_update)
+    // setCached('days', days_for_update)
   }
 
   const archiveEntry = entry => {
@@ -89,7 +91,7 @@ const Days = () => {
         days_for_update.push(day)
       }
       setDays(days_for_update)
-      setCached('days', days_for_update)
+      // setCached('days', days_for_update)
     })
   }
 
@@ -106,7 +108,7 @@ const Days = () => {
         days_for_update.push(day)
       }
       setDays(days_for_update)
-      setCached('days', days_for_update)
+      // setCached('days', days_for_update)
     })
   }
 
@@ -138,12 +140,27 @@ const Days = () => {
       setShouldCreateNewEntry(true)
     }, NEW_ENTRY_DELAY)
   }
+
+  useEffect(() => {
+    if (timeOutRef.current) {
+      clearTimeout(timeOutRef.current)
+    }
+    return () => {
+      if (timeOutRef.current) {
+        clearTimeout(timeOutRef.current)
+      }
+    }
+  }, [])
+
+  const shiftPressed = useKeyPress('Shift')
+
   const _handleKeyPress = e => {
     if (shouldCreateNewEntry === false) {
+      setShouldCreateNewEntry(false)
       delayNewEntry()
     }
     if (e.key === 'Enter' && focused) {
-      if (shouldCreateNewEntry === true) {
+      if (shouldCreateNewEntry === true || shiftPressed) {
         saveEntry()
       } else {
         updatePreviousEntry()
