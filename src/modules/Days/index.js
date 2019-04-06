@@ -10,6 +10,7 @@ const NEW_ENTRY_DELAY = 5 * 60 * 1000
 
 const Days = () => {
   const pageEndRef = useRef()
+  const inputRef = useRef()
   const [shouldCreateNewEntry, setShouldCreateNewEntry] = useState(true)
   const [days, setDays] = useState([])
   const [currentEntry, setCurrentEntry] = useState('')
@@ -46,41 +47,47 @@ const Days = () => {
     )
   }
 
-  const saveEntry = () => {
-    makeRequest({
-      path: 'entries.json',
-      method: 'POST',
-      body: { entry: { text: currentEntry } }
-    }).then(day => {
-      const days_for_update = [...days]
-      const index = days_for_update.findIndex(d => d.id === day.id)
-      if (index !== -1) {
-        days_for_update[index] = day
-      } else {
-        days_for_update.push(day)
-      }
-      setDays(days_for_update)
-      // setCached('days', days_for_update)
-      setCurrentEntry('')
-      pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
-      setShouldCreateNewEntry(false)
+  const saveEntry = async () => {
+    return new Promise(resolve => {
+      makeRequest({
+        path: 'entries.json',
+        method: 'POST',
+        body: { entry: { text: currentEntry } }
+      }).then(day => {
+        const days_for_update = [...days]
+        const index = days_for_update.findIndex(d => d.id === day.id)
+        if (index !== -1) {
+          days_for_update[index] = day
+        } else {
+          days_for_update.push(day)
+        }
+        setDays(days_for_update)
+        // setCached('days', days_for_update)
+        setCurrentEntry('')
+        pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
+        setShouldCreateNewEntry(false)
+        resolve()
+      })
     })
   }
 
-  const updateEntryText = async (entry, text) => {
-    const new_entry = await makeRequest({
-      path: `/entries/${entry.id}.json`,
-      method: 'PUT',
-      body: { entry: { text: text } }
+  const updateEntryText = (entry, text) => {
+    return new Promise(async resolve => {
+      const new_entry = await makeRequest({
+        path: `/entries/${entry.id}.json`,
+        method: 'PUT',
+        body: { entry: { text: text } }
+      })
+      const days_for_update = [...days]
+      const day_to_update = days_for_update.find(d => d.id === new_entry.day_id)
+      const entry_to_update = day_to_update.entries.find(
+        e => e.id === new_entry.id
+      )
+      entry_to_update.text = text
+      setDays(days_for_update)
+      // setCached('days', days_for_update)
+      resolve()
     })
-    const days_for_update = [...days]
-    const day_to_update = days_for_update.find(d => d.id === new_entry.day_id)
-    const entry_to_update = day_to_update.entries.find(
-      e => e.id === new_entry.id
-    )
-    entry_to_update.text = text
-    setDays(days_for_update)
-    // setCached('days', days_for_update)
   }
 
   const archiveEntry = entry => {
@@ -121,13 +128,16 @@ const Days = () => {
     getDays()
   }, [])
 
-  const updatePreviousEntry = () => {
+  const updatePreviousEntry = async () => {
     const lastDay = last(days)
     if (lastDay !== undefined) {
       const recentDayEntries = lastDay.entries
       const recentEntry = last(recentDayEntries)
       if (recentEntry !== undefined) {
-        updateEntryText(recentEntry, `${recentEntry.text}\n${currentEntry}`)
+        await updateEntryText(
+          recentEntry,
+          `${recentEntry.text}\n${currentEntry}`
+        )
         setCurrentEntry('')
         pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
         return
@@ -181,12 +191,20 @@ const Days = () => {
     setFocused(false)
   }
 
+  const addEmptyEntry = () => {
+    saveEntry().then(() => {
+      if (inputRef.current) inputRef.current.focus()
+      if (pageEndRef.current)
+        pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
+    })
+  }
+
   return (
     <div className="container">
       <div className="app-bar mdc-elevation--z4">
         <div className="app-bar-title">Entries</div>
         <div>
-          <i onClick={saveEntry} className="app-bar-icon material-icons">
+          <i onClick={addEmptyEntry} className="app-bar-icon material-icons">
             add
           </i>
         </div>
@@ -204,6 +222,7 @@ const Days = () => {
       <div style={{ float: 'left', clear: 'both' }} ref={pageEndRef} />
       <div className="footer-bar mdc-elevation--z4">
         <input
+          ref={inputRef}
           onFocus={onFocus}
           onBlur={onBlur}
           type="text"
