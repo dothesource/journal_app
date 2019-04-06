@@ -28,6 +28,11 @@ const Days = () => {
   const deleteEntry = entry => {
     makeRequest({ path: `entries/${entry.id}.json`, method: 'DELETE' }).then(
       day => {
+        const last_day = last(days)
+        const last_entry = !!last_day ? last(last_day.entries) : undefined
+        if (last_entry !== undefined && entry.id === last_entry.id) {
+          setShouldCreateNewEntry(true)
+        }
         const days_for_update = [...days]
         const index = days_for_update.findIndex(d => d.id === day.id)
         if (index !== -1) {
