@@ -37,6 +37,14 @@ const Entry = ({
     setFocused(false)
   }
 
+  let archiveButton, unarchiveButton, deleteButton;
+  if(isArchived) {
+    unarchiveButton = (<i onClick={() => unarchiveEntry(entry)} className="material-icons">unarchive</i>);
+    deleteButton = (<i onClick={() => deleteEntry(entry)} className="material-icons">delete</i>);
+  } else {
+    archiveButton = (<i onClick={() => archiveEntry(entry)} className="material-icons">archive</i>);
+  }
+
   return (
     <Card className="card" onClick={focusTextArea}>
       <TextareaAutosize
@@ -58,18 +66,9 @@ const Entry = ({
       />
       <CardActions>
         <CardActionIcons>
-          <i onClick={() => deleteEntry(entry)} className="material-icons">
-            delete
-          </i>
-          {isArchived ? (
-            <i onClick={() => unarchiveEntry(entry)} className="material-icons">
-              unarchive
-            </i>
-          ) : (
-            <i onClick={() => archiveEntry(entry)} className="material-icons">
-              archive
-            </i>
-          )}
+          {archiveButton}
+          {unarchiveButton}
+          {deleteButton}
         </CardActionIcons>
       </CardActions>
     </Card>
