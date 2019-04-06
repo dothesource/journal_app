@@ -38,8 +38,8 @@ export async function makeRequest({
   }
   if (body !== undefined) options.body = JSON.stringify(body)
 
-  const cachedResp = await getCached(cacheId)
-  if (method === 'GET' && cachedResp) return cachedResp
+  // const cachedResp = await getCached(cacheId)
+  // if (method === 'GET' && cachedResp) return cachedResp
   return fetch(`${URL}/${path}`, options)
     .then(response => response.json())
     .then(json => {
