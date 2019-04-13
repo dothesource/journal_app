@@ -3,7 +3,6 @@ import '../../App.css'
 import { makeRequest, setCached } from '../../utils/api'
 import '@material/elevation/dist/mdc.elevation.css'
 import Day from '../../components/Day'
-import { last } from '../../utils/generic'
 
 const Archived = () => {
   const pageEndRef = useRef()
