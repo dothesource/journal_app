@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useReducer, createContext } from 'react'
 import { days_reducer, archived_reducer } from './reducers'
 
-export const Store = React.createContext()
+export const Store = createContext()
 
 const initialState = {
   days: [],
@@ -16,7 +16,7 @@ const reducer = (state = initialState, action) => {
 }
 
 export function StoreProvider(props) {
-  const [state, dispatch] = React.useReducer(reducer, initialState)
+  const [state, dispatch] = useReducer(reducer, initialState)
   const value = { state, dispatch }
   return <Store.Provider value={value}>{props.children}</Store.Provider>
 }

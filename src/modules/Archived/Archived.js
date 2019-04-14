@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useContext } from 'react'
 import '../../App.css'
 import api from '../../utils/api'
 import '@material/elevation/dist/mdc.elevation.css'
@@ -16,7 +16,7 @@ const Archived = () => {
   const {
     state: { archived: archivedEntriesDays },
     dispatch
-  } = React.useContext(Store)
+  } = useContext(Store)
   const getArchivedEntriesDays = async () => {
     dispatch(archivedDaysActions.init())
     api

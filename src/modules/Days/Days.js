@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useContext } from 'react'
 import '../../App.css'
 import api from '../../utils/api'
 import '@material/elevation/dist/mdc.elevation.css'
@@ -19,7 +19,7 @@ const Days = () => {
   const {
     state: { days },
     dispatch
-  } = React.useContext(Store)
+  } = useContext(Store)
   const pageEndRef = useRef()
   const inputRef = useRef()
   const [shouldCreateNewEntry, setShouldCreateNewEntry] = useState(true)

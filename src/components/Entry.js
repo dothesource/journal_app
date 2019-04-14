@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, Fragment } from 'react'
 import Card, { CardActions, CardActionIcons } from '@material/react-card'
 import '@material/react-card/dist/card.css'
 import TextareaAutosize from 'react-textarea-autosize'
@@ -40,7 +40,7 @@ const Entry = ({
   const cardActionButtons = () => {
     if (isArchived) {
       return (
-        <React.Fragment>
+        <Fragment>
           <i
             onClick={() => unarchiveEntry(entry)}
             className="card-icon material-icons"
@@ -53,7 +53,7 @@ const Entry = ({
           >
             delete
           </i>
-        </React.Fragment>
+        </Fragment>
       )
     } else {
       return (

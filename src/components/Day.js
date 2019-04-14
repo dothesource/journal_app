@@ -1,8 +1,14 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import Entry from './Entry'
-const Day = ({ day, deleteEntry, updateEntryText, archiveEntry, unarchiveEntry }) => {
+const Day = ({
+  day,
+  deleteEntry,
+  updateEntryText,
+  archiveEntry,
+  unarchiveEntry
+}) => {
   return (
-    <React.Fragment>
+    <Fragment>
       <h5>{day.title}</h5>
       {day &&
         day.entries &&
@@ -17,7 +23,7 @@ const Day = ({ day, deleteEntry, updateEntryText, archiveEntry, unarchiveEntry }
             isArchived={entry.archived_at}
           />
         ))}
-    </React.Fragment>
+    </Fragment>
   )
 }
 export default Day
