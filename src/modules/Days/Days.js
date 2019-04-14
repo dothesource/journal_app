@@ -19,8 +19,7 @@ import {
   initArchive,
   archiveFailure,
   archiveSuccess
-} from '../../store/stores/days'
-import { reject } from 'q'
+} from '../../store/reducers/days'
 
 const NEW_ENTRY_DELAY = 5 * 60 * 1000
 
@@ -66,7 +65,7 @@ const Days = () => {
 
   const updateEntryText = (entry, text) => {
     dispatch(initUpdate())
-    return new Promise(async resolve => {
+    return new Promise(async (resolve, reject) => {
       api
         .updateEntry(entry, text)
         .then(() => {

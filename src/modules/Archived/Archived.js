@@ -17,7 +17,7 @@ import {
   initUnArchive,
   unArchiveSuccess,
   unArchiveFailure
-} from '../../store/stores/archived'
+} from '../../store/reducers/archived'
 
 const Archived = () => {
   const pageEndRef = useRef()

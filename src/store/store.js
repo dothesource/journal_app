@@ -1,5 +1,5 @@
 import React from 'react'
-import { days_reducer, archived_reducer } from './stores'
+import { days_reducer, archived_reducer } from './reducers'
 
 export const Store = React.createContext()
 
