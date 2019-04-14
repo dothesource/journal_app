@@ -1,91 +1,56 @@
 import createAsyncAction from '../../utils/createAsyncAction'
 import { updateDay, updateEntry } from './shared'
 
-const {
-  init_action: archived_days_init,
-  success_action: archived_days_success,
-  failure_action: archived_days_failure,
-  init: archivedInitDays,
-  success: archivedDaysSuccess,
-  failure: archivedDaysFailure
-} = createAsyncAction('archivedDays')
+export const archivedDaysActions = createAsyncAction('archivedDays')
 
-export { archivedInitDays, archivedDaysSuccess, archivedDaysFailure }
+export const deleteActions = createAsyncAction('deleteEntry')
 
-const {
-  init_action: delete_init,
-  success_action: delete_success,
-  failure_action: delete_failure,
-  init: initDelete,
-  success: deleteSuccess,
-  failure: deleteFailure
-} = createAsyncAction('deleteEntry')
+export const updateArchivedActions = createAsyncAction('updateArchivedEntry')
 
-export { initDelete, deleteSuccess, deleteFailure }
-
-const {
-  init_action: update_archived_init,
-  success_action: update_archived_success,
-  failure_action: update_archived_failure,
-  init: initUpdateArchived,
-  success: updateArchivedSuccess,
-  failure: updateArchivedFailure
-} = createAsyncAction('updateArchivedEntry')
-export { initUpdateArchived, updateArchivedSuccess, updateArchivedFailure }
-
-const {
-  init_action: un_archive_init,
-  success_action: un_archive_success,
-  failure_action: un_archive_failure,
-  init: initUnArchive,
-  success: unArchiveSuccess,
-  failure: unArchiveFailure
-} = createAsyncAction('unArchiveEntry')
-
-export { initUnArchive, unArchiveSuccess, unArchiveFailure }
+export const unArchiveActions = createAsyncAction('unArchiveEntry')
 
 export function archived_reducer(state, action) {
   switch (action.type) {
-    case archived_days_init:
+    case archivedDaysActions.init_action:
       return {
         ...state
       }
-    case archived_days_success:
+    case archivedDaysActions.success_action:
       return {
         ...state,
         archived: action.payload
       }
-    case archived_days_failure:
+    case archivedDaysActions.failure_action:
       return {
         ...state
       }
-    case delete_init:
+    case deleteActions.init_action:
       return {
         ...state
       }
-    case delete_success:
+    case deleteActions.success_action:
       return {
         ...state,
         archived: updateDay(action.payload, state.archived)
       }
-    case delete_failure:
+    case deleteActions.failure_action:
       return {
         ...state
       }
-    case update_archived_init:
+    case updateArchivedActions.init_action:
       return state
-    case update_archived_success:
+    case updateArchivedActions.success_action:
       return {
         ...state,
         archived: updateEntry(action.payload, state.archived)
       }
-    case update_archived_failure:
+    case updateArchivedActions.failure_action:
       return state
-    case un_archive_init:
+    case unArchiveActions.init_action:
       return state
-    case un_archive_success:
+    case unArchiveActions.success_action:
       return { ...state, archived: updateDay(action.payload, state.archived) }
-    case un_archive_failure:
+    case unArchiveActions.failure_action:
       return state
     default:
       return state

@@ -7,18 +7,10 @@ import { last } from '../../utils/generic'
 import useKeyPress from '../../utils/use_key_press'
 import { Store } from '../../store'
 import {
-  initDays,
-  daysSuccess,
-  daysFailure,
-  initSave,
-  saveSuccess,
-  saveFailure,
-  updateSuccess,
-  initUpdate,
-  updateFailure,
-  initArchive,
-  archiveFailure,
-  archiveSuccess
+  daysActions,
+  saveActions,
+  updateActions,
+  archiveActions
 } from '../../store/reducers/days'
 
 const NEW_ENTRY_DELAY = 5 * 60 * 1000
@@ -33,14 +25,14 @@ const Days = () => {
   const [shouldCreateNewEntry, setShouldCreateNewEntry] = useState(true)
   const [currentEntry, setCurrentEntry] = useState('')
   const getDays = async () => {
-    dispatch(initDays())
+    dispatch(daysActions.init())
     api
       .getDays()
       .then(days => {
-        dispatch(daysSuccess(days))
+        dispatch(daysActions.success(days))
         pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
       })
-      .catch(e => dispatch(daysFailure(e)))
+      .catch(e => dispatch(daysActions.failure(e)))
   }
 
   const handleInputChange = event => {
@@ -48,50 +40,50 @@ const Days = () => {
   }
 
   const saveEntry = async () => {
-    dispatch(initSave())
+    dispatch(saveActions.init())
     return new Promise(resolve => {
       api
         .saveEntry(currentEntry)
         .then(day => {
-          dispatch(saveSuccess(day))
+          dispatch(saveActions.success(day))
           setCurrentEntry('')
           pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
           setShouldCreateNewEntry(false)
           resolve()
         })
-        .catch(e => dispatch(saveFailure(e)))
+        .catch(e => dispatch(saveActions.failure(e)))
     })
   }
 
   const updateEntryText = (entry, text) => {
-    dispatch(initUpdate())
+    dispatch(updateActions.init())
     return new Promise(async (resolve, reject) => {
       api
         .updateEntry(entry, text)
         .then(() => {
-          dispatch(updateSuccess({ entry, text }))
+          dispatch(updateActions.success({ entry, text }))
           resolve()
         })
         .catch(e => {
-          dispatch(updateFailure(e))
+          dispatch(updateActions.failure(e))
           reject(e)
         })
     })
   }
 
   const archiveEntry = entry => {
-    dispatch(initArchive)
+    dispatch(archiveActions.init())
     api
       .archiveEntry(entry)
       .then(day => {
-        dispatch(archiveSuccess(day))
+        dispatch(archiveActions.success(day))
         const last_day = last(days)
         const last_entry = !!last_day ? last(last_day.entries) : undefined
         if (last_entry !== undefined && entry.id === last_entry.id) {
           setShouldCreateNewEntry(true)
         }
       })
-      .catch(e => dispatch(archiveFailure(e)))
+      .catch(e => dispatch(archiveActions.failure(e)))
   }
 
   useEffect(() => {

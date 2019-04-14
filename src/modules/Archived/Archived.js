@@ -5,18 +5,10 @@ import '@material/elevation/dist/mdc.elevation.css'
 import Day from '../../components/Day'
 import { Store } from '../../store'
 import {
-  archivedInitDays,
-  archivedDaysSuccess,
-  archivedDaysFailure,
-  initDelete,
-  deleteSuccess,
-  deleteFailure,
-  initUpdateArchived,
-  updateArchivedSuccess,
-  updateArchivedFailure,
-  initUnArchive,
-  unArchiveSuccess,
-  unArchiveFailure
+  archivedDaysActions,
+  deleteActions,
+  updateArchivedActions,
+  unArchiveActions
 } from '../../store/reducers/archived'
 
 const Archived = () => {
@@ -26,14 +18,14 @@ const Archived = () => {
     dispatch
   } = React.useContext(Store)
   const getArchivedEntriesDays = async () => {
-    dispatch(archivedInitDays())
+    dispatch(archivedDaysActions.init())
     api
       .getArchivedDays()
       .then(days => {
-        dispatch(archivedDaysSuccess(days))
+        dispatch(archivedDaysActions.success(days))
         pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
       })
-      .catch(e => dispatch(archivedDaysFailure(e)))
+      .catch(e => dispatch(archivedDaysActions.failure(e)))
   }
 
   useEffect(() => {
@@ -41,33 +33,33 @@ const Archived = () => {
   }, [])
 
   const deleteEntry = entry => {
-    dispatch(initDelete())
+    dispatch(deleteActions.init())
     api
       .deleteEntry(entry)
       .then(day => {
-        dispatch(deleteSuccess(day))
+        dispatch(deleteActions.success(day))
       })
-      .catch(e => dispatch(deleteFailure(e)))
+      .catch(e => dispatch(deleteActions.failure(e)))
   }
 
   const updateEntryText = async (entry, text) => {
-    dispatch(initUpdateArchived())
+    dispatch(updateArchivedActions.init())
     api
       .updateArchivedEntry(entry, text)
       .then(entry => {
-        dispatch(updateArchivedSuccess({ entry, text }))
+        dispatch(updateArchivedActions.success({ entry, text }))
       })
-      .catch(e => dispatch(updateArchivedFailure(e)))
+      .catch(e => dispatch(updateArchivedActions.failure(e)))
   }
 
   const unarchiveEntry = entry => {
-    dispatch(initUnArchive())
+    dispatch(unArchiveActions.init())
     api
       .unArchiveEntry(entry)
       .then(day => {
-        dispatch(unArchiveSuccess(day))
+        dispatch(unArchiveActions.success(day))
       })
-      .catch(e => unArchiveFailure(e))
+      .catch(e => unArchiveActions.failure(e))
   }
 
   return (

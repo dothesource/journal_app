@@ -1,99 +1,65 @@
 import createAsyncAction from '../../utils/createAsyncAction'
 import { updateDay, updateEntry } from './shared'
 
-const {
-  init_action: days_init,
-  success_action: days_success,
-  failure_action: days_failure,
-  init: initDays,
-  success: daysSuccess,
-  failure: daysFailure
-} = createAsyncAction('days')
+export const daysActions = createAsyncAction('days')
 
-export { initDays, daysSuccess, daysFailure }
+export const archiveActions = createAsyncAction('archiveEntry')
 
-const {
-  init_action: archive_init,
-  success_action: archive_success,
-  failure_action: archive_failure,
-  init: initArchive,
-  success: archiveSuccess,
-  failure: archiveFailure
-} = createAsyncAction('archiveEntry')
+export const saveActions = createAsyncAction('saveEntry')
 
-export { initArchive, archiveSuccess, archiveFailure }
-
-const {
-  init_action: save_init,
-  success_action: save_success,
-  failure_action: save_failure,
-  init: initSave,
-  success: saveSuccess,
-  failure: saveFailure
-} = createAsyncAction('saveEntry')
-export { initSave, saveSuccess, saveFailure }
-
-const {
-  init_action: update_init,
-  success_action: update_success,
-  failure_action: update_failure,
-  init: initUpdate,
-  success: updateSuccess,
-  failure: updateFailure
-} = createAsyncAction('updateEntry')
-export { initUpdate, updateSuccess, updateFailure }
+export const updateActions = createAsyncAction('updateEntry')
 
 export function days_reducer(state, action) {
   switch (action.type) {
-    case days_init:
+    case daysActions.init_action:
       return {
         ...state,
         daysLoading: true,
         daysError: false
       }
-    case days_success:
+    case daysActions.success_action:
       return {
         ...state,
         daysLoading: false,
         daysError: false,
         days: action.payload
       }
-    case days_failure:
+    case daysActions.failure_action:
       return {
         ...state,
         daysLoading: false,
         daysError: true
       }
-    case archive_init:
+    case archiveActions.init_action:
       return {
         ...state
       }
-    case archive_success:
+    case archiveActions.success_action:
       return {
         ...state,
         days: updateDay(action.payload, state.days)
       }
-    case archive_failure:
+    case archiveActions.failure_action:
       return {
         ...state
       }
-    case save_init:
+    case saveActions.init_action:
       return state
-    case save_success:
+    case saveActions.success_action:
       return {
         ...state,
         days: updateDay(action.payload, state.days)
       }
-    case save_failure:
+    case saveActions.failure_action:
       return state
-    case update_init:
+    case updateActions.init_action:
       return state
-    case update_success:
+    case updateActions.success_action:
       return {
         ...state,
         days: updateEntry(action.payload, state.days)
       }
-    case update_failure:
+    case updateActions.failure_action:
       return state
     default:
       return state
