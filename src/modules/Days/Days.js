@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import '../../App.css'
-import { makeRequest } from '../../utils/api'
+import api from '../../utils/api'
 import '@material/elevation/dist/mdc.elevation.css'
 import Day from '../../components/Day'
 import { last } from '../../utils/generic'
@@ -35,7 +35,8 @@ const Days = () => {
   const [currentEntry, setCurrentEntry] = useState('')
   const getDays = async () => {
     dispatch(initDays())
-    makeRequest({ path: 'days.json', cacheId: 'days' })
+    api
+      .getDays()
       .then(days => {
         dispatch(daysSuccess(days))
         pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
@@ -50,11 +51,8 @@ const Days = () => {
   const saveEntry = async () => {
     dispatch(initSave())
     return new Promise(resolve => {
-      makeRequest({
-        path: 'entries.json',
-        method: 'POST',
-        body: { entry: { text: currentEntry } }
-      })
+      api
+        .saveEntry(currentEntry)
         .then(day => {
           dispatch(saveSuccess(day))
           setCurrentEntry('')
@@ -69,11 +67,8 @@ const Days = () => {
   const updateEntryText = (entry, text) => {
     dispatch(initUpdate())
     return new Promise(async resolve => {
-      await makeRequest({
-        path: `/entries/${entry.id}.json`,
-        method: 'PUT',
-        body: { entry: { text: text } }
-      })
+      api
+        .updateEntry(entry, text)
         .then(() => {
           dispatch(updateSuccess({ entry, text }))
           resolve()
@@ -87,12 +82,9 @@ const Days = () => {
 
   const archiveEntry = entry => {
     dispatch(initArchive)
-    makeRequest({
-      path: `entries/${entry.id}/archive.json`,
-      method: 'PUT'
-    })
+    api
+      .archiveEntry(entry)
       .then(day => {
-        console.log(day)
         dispatch(archiveSuccess(day))
         const last_day = last(days)
         const last_entry = !!last_day ? last(last_day.entries) : undefined
@@ -188,14 +180,15 @@ const Days = () => {
           </i>
         </div>
       </div>
-      {days.map(day => (
-        <Day
-          key={`day-${day.id}`}
-          day={day}
-          updateEntryText={updateEntryText}
-          archiveEntry={archiveEntry}
-        />
-      ))}
+      {days &&
+        days.map(day => (
+          <Day
+            key={`day-${day.id}`}
+            day={day}
+            updateEntryText={updateEntryText}
+            archiveEntry={archiveEntry}
+          />
+        ))}
       <div style={{ float: 'left', clear: 'both' }} ref={pageEndRef} />
       <div className="footer-bar mdc-elevation--z4">
         <input

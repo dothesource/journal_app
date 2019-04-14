@@ -1,7 +1,5 @@
 import React from 'react'
-// import combineReducers from '../utils/combineReducers'
-// import * as reducers from './stores'
-import { days_reducer as reducer } from './stores'
+import { days_reducer, archived_reducer } from './stores'
 
 export const Store = React.createContext()
 
@@ -11,7 +9,11 @@ const initialState = {
   daysLoading: true,
   daysError: false
 }
-// const reducer = combineReducers(reducers)
+
+const reducer = (state = initialState, action) => {
+  state = days_reducer(state, action)
+  return archived_reducer(state, action)
+}
 
 export function StoreProvider(props) {
   const [state, dispatch] = React.useReducer(reducer, initialState)
