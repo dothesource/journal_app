@@ -13,7 +13,7 @@ export function saveEntry(entry) {
 }
 export function updateEntry(entry, text) {
   return makeRequest({
-    path: `/entries/${entry.id}.json`,
+    path: `entries/${entry.id}.json`,
     method: 'PUT',
     body: { entry: { text: text } }
   })
