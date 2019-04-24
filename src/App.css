@@ -3,6 +3,9 @@ body {
 }
 .container {
   padding: 56px 16px 56px 16px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
 }
 .app-bar {
   display: flex;
@@ -31,6 +34,7 @@ body {
   min-height: 56px;
   margin: 16px 0;
   padding: 16px;
+  width: 100%;
 }
 
 .footer-bar {

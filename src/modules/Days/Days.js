@@ -2,22 +2,22 @@ import React, { useState, useEffect, useRef, useContext } from 'react'
 import '../../App.css'
 import api from '../../utils/api'
 import '@material/elevation/dist/mdc.elevation.css'
-import Day from '../../components/Day'
 import { last } from '../../utils/generic'
 import useKeyPress from '../../utils/use_key_press'
 import { Store } from '../../store'
+import Loader from 'react-loader-spinner'
 import {
   daysActions,
   saveActions,
   updateActions,
   archiveActions
 } from '../../store/reducers/days'
-
+import DayList from './DayList'
 const NEW_ENTRY_DELAY = 5 * 60 * 1000
 
 const Days = () => {
   const {
-    state: { days },
+    state: { days, daysLoading },
     dispatch
   } = useContext(Store)
   const pageEndRef = useRef()
@@ -171,15 +171,18 @@ const Days = () => {
           </i>
         </div>
       </div>
-      {days &&
-        days.map(day => (
-          <Day
-            key={`day-${day.id}`}
-            day={day}
-            updateEntryText={updateEntryText}
-            archiveEntry={archiveEntry}
-          />
-        ))}
+      {daysLoading ? (
+        <div style={{ alignSelf: 'center' }}>
+          <Loader type="ThreeDots" color="#282c34" height="100" width="100" />
+        </div>
+      ) : (
+        <DayList
+          days={days}
+          updateEntryText={updateEntryText}
+          archiveEntry={archiveEntry}
+        />
+      )}
+
       <div style={{ float: 'left', clear: 'both' }} ref={pageEndRef} />
       <div className="footer-bar mdc-elevation--z4">
         <input

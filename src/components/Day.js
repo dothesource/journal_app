@@ -1,12 +1,6 @@
 import React, { Fragment } from 'react'
 import Entry from './Entry'
-const Day = ({
-  day,
-  deleteEntry,
-  updateEntryText,
-  archiveEntry,
-  unarchiveEntry
-}) => {
+const Day = ({ day, ...props }) => {
   return (
     <Fragment>
       <h5>{day.title}</h5>
@@ -16,11 +10,8 @@ const Day = ({
           <Entry
             key={`entry-${entry.id}`}
             entry={entry}
-            deleteEntry={deleteEntry}
-            updateEntryText={updateEntryText}
-            archiveEntry={archiveEntry}
-            unarchiveEntry={unarchiveEntry}
             isArchived={entry.archived_at}
+            {...props}
           />
         ))}
     </Fragment>
