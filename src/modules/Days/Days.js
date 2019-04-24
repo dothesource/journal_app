@@ -13,6 +13,7 @@ import {
   archiveActions
 } from '../../store/reducers/days'
 import DayList from './DayList'
+import AppBar from '../../components/AppBar'
 const NEW_ENTRY_DELAY = 5 * 60 * 1000
 
 const Days = () => {
@@ -163,14 +164,10 @@ const Days = () => {
 
   return (
     <div className="container">
-      <div className="app-bar mdc-elevation--z4">
-        <div className="app-bar-title">Entries</div>
-        <div>
-          <i onClick={addEmptyEntry} className="app-bar-icon material-icons">
-            add
-          </i>
-        </div>
-      </div>
+      <AppBar
+        title="Entries"
+        actions={[{ onClick: addEmptyEntry, iconName: 'add' }]}
+      />
       {daysLoading ? (
         <div style={{ alignSelf: 'center' }}>
           <Loader type="ThreeDots" color="#282c34" height="100" width="100" />

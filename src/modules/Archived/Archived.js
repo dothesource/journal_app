@@ -10,6 +10,7 @@ import {
   updateArchivedActions,
   unArchiveActions
 } from '../../store/reducers/archived'
+import AppBar from '../../components/AppBar'
 
 const Archived = () => {
   const pageEndRef = useRef()
@@ -64,9 +65,7 @@ const Archived = () => {
 
   return (
     <div className="container">
-      <div className="app-bar mdc-elevation--z4">
-        <div className="app-bar-title">Archived</div>
-      </div>
+      <AppBar title="Archived" />
       {archivedEntriesDays.map(day => (
         <Day
           key={`day-${day.id}`}
