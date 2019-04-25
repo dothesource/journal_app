@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
-import '../../App.css'
 import api from '../../utils/api'
-import '@material/elevation/dist/mdc.elevation.css'
 import { last } from '../../utils/generic'
 import useKeyPress from '../../utils/use_key_press'
 import { Store } from '../../store'

@@ -1,5 +1,6 @@
 import React, { useReducer, createContext } from 'react'
 import { days_reducer, archived_reducer } from './reducers'
+import { drawer_reducer } from './reducers/drawer'
 
 export const Store = createContext()
 
@@ -7,12 +8,15 @@ const initialState = {
   days: [],
   archived: [],
   daysLoading: true,
-  daysError: false
+  daysError: false,
+  drawerOpen: false
 }
 
 const reducer = (state = initialState, action) => {
   state = days_reducer(state, action)
-  return archived_reducer(state, action)
+  state = archived_reducer(state, action)
+  state = drawer_reducer(state, action)
+  return state
 }
 
 export function StoreProvider(props) {

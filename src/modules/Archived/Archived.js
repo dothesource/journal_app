@@ -1,7 +1,5 @@
 import React, { useEffect, useRef, useContext } from 'react'
-import '../../App.css'
 import api from '../../utils/api'
-import '@material/elevation/dist/mdc.elevation.css'
 import Day from '../../components/Day'
 import { Store } from '../../store'
 import {
