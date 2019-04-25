@@ -3,6 +3,29 @@ import Card, { CardActions, CardActionIcons } from '@material/react-card'
 import '@material/react-card/dist/card.css'
 import TextareaAutosize from 'react-textarea-autosize'
 import useDebounce from '../utils/use_debounce'
+import MaterialIcon from '../components/MaterialIcon'
+import styled from 'styled-components'
+
+const CardIcon = styled(MaterialIcon)`
+  color: grey;
+  padding: 8px;
+  cursor: pointer;
+`
+
+const EntryCard = styled(Card)`
+  min-height: 56px;
+  margin: 16px 0;
+  padding: 16px;
+  width: 100%;
+`
+
+const TextArea = styled(TextareaAutosize)`
+  outline: none;
+  border: none;
+  resize: none;
+  font-family: Roboto;
+  font-size: 16px;
+`
 const Entry = ({
   entry,
   deleteEntry,
@@ -37,50 +60,30 @@ const Entry = ({
     setFocused(false)
   }
 
+  const onUnArchive = () => unarchiveEntry(entry)
+  const onDelete = () => deleteEntry(entry)
+  const onArchive = () => archiveEntry(entry)
+
   const cardActionButtons = () => {
     if (isArchived) {
       return (
         <Fragment>
-          <i
-            onClick={() => unarchiveEntry(entry)}
-            className="card-icon material-icons"
-          >
-            unarchive
-          </i>
-          <i
-            onClick={() => deleteEntry(entry)}
-            className="card-icon material-icons"
-          >
-            delete
-          </i>
+          <CardIcon onClick={onUnArchive}>unarchive</CardIcon>
+          <CardIcon onClick={onDelete}>delete</CardIcon>
         </Fragment>
       )
     } else {
-      return (
-        <i
-          onClick={() => archiveEntry(entry)}
-          className="card-icon material-icons"
-        >
-          archive
-        </i>
-      )
+      return <CardIcon onClick={onArchive}>archive</CardIcon>
     }
   }
 
   return (
-    <Card className="card" onClick={focusTextArea}>
-      <TextareaAutosize
+    <EntryCard onClick={focusTextArea}>
+      <TextArea
         onFocus={onFocus}
         onBlur={onBlur}
         inputRef={inputRef}
         useCacheForDOMMeasurements
-        style={{
-          outline: 'none',
-          border: 'none',
-          resize: 'none',
-          fontFamily: 'Roboto',
-          fontSize: '16px'
-        }}
         onChange={({ target: { value } }) => {
           setText(value)
         }}
@@ -89,7 +92,7 @@ const Entry = ({
       <CardActions>
         <CardActionIcons>{cardActionButtons()}</CardActionIcons>
       </CardActions>
-    </Card>
+    </EntryCard>
   )
 }
 

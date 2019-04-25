@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-import './App.css'
 import '@material/elevation/dist/mdc.elevation.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
