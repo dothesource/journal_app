@@ -1,6 +1,7 @@
 import React, { useRef, useImperativeHandle, forwardRef } from 'react'
 import styled from 'styled-components'
 import MaterialIcon from '../../components/MaterialIcon'
+import Elevated from '../../components/Elevated'
 
 function FooterBar(
   {
@@ -38,7 +39,7 @@ function FooterBar(
 
 export default forwardRef(FooterBar)
 
-const Footer = styled.div`
+const Footer = styled(Elevated)`
   height: 56px;
   position: fixed;
   bottom: 0;
@@ -47,8 +48,6 @@ const Footer = styled.div`
   background-color: white;
   align-items: center;
   display: flex;
-  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
-    0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 `
 
 const Icon = styled(MaterialIcon)`
