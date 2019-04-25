@@ -3,6 +3,54 @@ import Drawer from 'react-motion-drawer'
 import { Store } from '../store'
 import { CLOSE_DRAWER } from '../store/reducers/drawer'
 import { navigate } from '@reach/router'
+import styled from 'styled-components'
+import MaterialIcon from './MaterialIcon'
+
+const DrawerNavigator = styled(Drawer)`
+  background-color: white;
+`
+
+const DrawerContent = styled.div`
+  padding: 16px;
+`
+
+const DrawerHeader = styled.h3`
+  font-size: 20px;
+`
+
+const Item = styled.div`
+  display: flex;
+  align-items: center;
+  flex: 1;
+  cursor: pointer;
+`
+
+const DrawerIcon = styled(MaterialIcon)`
+  padding: 16px 32px 16px 0px;
+`
+
+const DrawerItem = ({ iconName, title, path, dispatch }) => {
+  return (
+    <Item
+      onClick={() => {
+        dispatch({ type: CLOSE_DRAWER })
+        navigate(path)
+      }}
+    >
+      <DrawerIcon>{iconName}</DrawerIcon>
+      <span>{title}</span>
+    </Item>
+  )
+}
+
+const routes = [
+  {
+    icon: 'home',
+    text: 'Home',
+    path: '/'
+  },
+  { icon: 'archive', text: 'Archived', path: '/archived' }
+]
 
 const DrawerNav = () => {
   const {
@@ -11,57 +59,24 @@ const DrawerNav = () => {
   } = useContext(Store)
 
   return (
-    <Drawer
+    <DrawerNavigator
       open={drawerOpen}
       onChange={() => {
         if (drawerOpen === true) dispatch({ type: CLOSE_DRAWER })
       }}
-      drawerStyle={{ backgroundColor: 'white' }}
     >
-      <div style={{ padding: '16px' }}>
-        <h3 style={{ fontSize: '20px' }}>Journal</h3>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            flex: 1,
-            cursor: 'pointer'
-          }}
-          onClick={() => {
-            dispatch({ type: CLOSE_DRAWER })
-            navigate('/')
-          }}
-        >
-          <i
-            className="material-icons"
-            style={{ padding: '16px 32px 16px 0px' }}
-          >
-            home
-          </i>
-          <span>Home</span>
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            flex: 1,
-            cursor: 'pointer'
-          }}
-          onClick={() => {
-            dispatch({ type: CLOSE_DRAWER })
-            navigate('/archived')
-          }}
-        >
-          <i
-            className="material-icons"
-            style={{ padding: '16px 32px 16px 0px' }}
-          >
-            archive
-          </i>
-          <span>Archived</span>
-        </div>
-      </div>
-    </Drawer>
+      <DrawerContent>
+        <DrawerHeader>Journal</DrawerHeader>
+        {routes.map(({ icon, text, path }) => (
+          <DrawerItem
+            path={path}
+            iconName={icon}
+            title={text}
+            dispatch={dispatch}
+          />
+        ))}
+      </DrawerContent>
+    </DrawerNavigator>
   )
 }
 export default DrawerNav

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Store } from '../store'
-import { OPEN_DRAWER, TOGGLE_DRAWER } from '../store/reducers/drawer'
+import { OPEN_DRAWER } from '../store/reducers/drawer'
 
 const AppBar = ({ actions = [], title }) => {
   const { dispatch } = useContext(Store)
