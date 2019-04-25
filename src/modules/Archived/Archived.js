@@ -9,6 +9,7 @@ import {
   unArchiveActions
 } from '../../store/reducers/archived'
 import AppBar from '../../components/AppBar'
+import Container from '../../components/Container'
 
 const Archived = () => {
   const pageEndRef = useRef()
@@ -62,7 +63,7 @@ const Archived = () => {
   }
 
   return (
-    <div className="container">
+    <Container>
       <AppBar title="Archived" />
       {archivedEntriesDays.map(day => (
         <Day
@@ -74,7 +75,7 @@ const Archived = () => {
         />
       ))}
       <div style={{ float: 'left', clear: 'both' }} ref={pageEndRef} />
-    </div>
+    </Container>
   )
 }
 

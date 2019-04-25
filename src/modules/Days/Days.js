@@ -12,7 +12,14 @@ import {
 } from '../../store/reducers/days'
 import DayList from './DayList'
 import AppBar from '../../components/AppBar'
+import Container from '../../components/Container'
+import styled from 'styled-components'
+import Footer from './Footer'
 const NEW_ENTRY_DELAY = 5 * 60 * 1000
+
+const SelfCentered = styled.div`
+  align-self: center;
+`
 
 const Days = () => {
   const {
@@ -161,15 +168,15 @@ const Days = () => {
   }
 
   return (
-    <div className="container">
+    <Container>
       <AppBar
         title="Entries"
         actions={[{ onClick: addEmptyEntry, iconName: 'add' }]}
       />
       {daysLoading ? (
-        <div style={{ alignSelf: 'center' }}>
+        <SelfCentered>
           <Loader type="ThreeDots" color="#282c34" height="100" width="100" />
-        </div>
+        </SelfCentered>
       ) : (
         <DayList
           days={days}
@@ -179,23 +186,16 @@ const Days = () => {
       )}
 
       <div style={{ float: 'left', clear: 'both' }} ref={pageEndRef} />
-      <div className="footer-bar mdc-elevation--z4">
-        <input
-          ref={inputRef}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          type="text"
-          placeholder="Add an entry..."
-          className="input"
-          onChange={handleInputChange}
-          onKeyPress={_handleKeyPress}
-          value={currentEntry}
-        />
-        <i onClick={saveEntry} className="icon material-icons">
-          send
-        </i>
-      </div>
-    </div>
+      <Footer
+        ref={inputRef}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        handleInputChange={handleInputChange}
+        handleKeyPress={_handleKeyPress}
+        currentEntry={currentEntry}
+        saveEntry={saveEntry}
+      />
+    </Container>
   )
 }
 
