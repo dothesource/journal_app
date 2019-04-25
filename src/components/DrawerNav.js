@@ -58,17 +58,17 @@ const DrawerNav = () => {
     dispatch
   } = useContext(Store)
 
+  const drawerOnChange = thing => {
+    if (drawerOpen === true) dispatch({ type: CLOSE_DRAWER })
+  }
+
   return (
-    <DrawerNavigator
-      open={drawerOpen}
-      onChange={() => {
-        if (drawerOpen === true) dispatch({ type: CLOSE_DRAWER })
-      }}
-    >
+    <DrawerNavigator open={drawerOpen} onChange={drawerOnChange}>
       <DrawerContent>
         <DrawerHeader>Journal</DrawerHeader>
         {routes.map(({ icon, text, path }) => (
           <DrawerItem
+            key={path + text}
             path={path}
             iconName={icon}
             title={text}
