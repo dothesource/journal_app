@@ -62,9 +62,21 @@ const Entry = ({
     setFocused(false)
   }
 
-  const onUnArchive = () => unarchiveEntry(entry)
-  const onDelete = () => deleteEntry(entry)
-  const onArchive = () => archiveEntry(entry)
+  const onUnArchive = e => {
+    e.stopPropagation()
+    e.preventDefault()
+    unarchiveEntry(entry)
+  }
+  const onDelete = e => {
+    e.stopPropagation()
+    e.preventDefault()
+    deleteEntry(entry)
+  }
+  const onArchive = e => {
+    e.stopPropagation()
+    e.preventDefault()
+    archiveEntry(entry)
+  }
 
   const cardActionButtons = () => {
     if (noActions) return

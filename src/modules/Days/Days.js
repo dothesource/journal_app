@@ -43,6 +43,7 @@ const Days = () => {
         .then(day => {
           dispatch(saveActions.success(day))
           setCurrentEntry('')
+          inputRef.current.focus()
           pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
           setShouldCreateNewEntry(false)
           resolve()
@@ -107,6 +108,7 @@ const Days = () => {
           `${recentEntry.text}\n${currentEntry}`
         )
         setCurrentEntry('')
+        inputRef.current.focus()
         pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
         return
       }
@@ -165,7 +167,6 @@ const Days = () => {
 
   const addEmptyEntry = () => {
     saveEntry().then(() => {
-      if (inputRef.current) inputRef.current.focus()
       if (pageEndRef.current)
         pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
     })

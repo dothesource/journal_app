@@ -20,6 +20,12 @@ function FooterBar(
       inputRef.current.focus()
     }
   }))
+  const onSend = e => {
+    e.stopPropagation()
+    e.preventDefault()
+    saveEntry()
+  }
+
   return (
     <Footer>
       <FooterInput
@@ -32,7 +38,7 @@ function FooterBar(
         onKeyPress={handleKeyPress}
         value={currentEntry}
       />
-      <Icon onClick={saveEntry}>send</Icon>
+      <Icon onClick={onSend}>send</Icon>
     </Footer>
   )
 }
