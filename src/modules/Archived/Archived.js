@@ -17,20 +17,21 @@ const Archived = () => {
     state: { archived: archivedEntriesDays },
     dispatch
   } = useContext(Store)
-  const getArchivedEntriesDays = async () => {
-    dispatch(archivedDaysActions.init())
-    api
-      .getArchivedDays()
-      .then(days => {
-        dispatch(archivedDaysActions.success(days))
-        pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
-      })
-      .catch(e => dispatch(archivedDaysActions.failure(e)))
-  }
 
   useEffect(() => {
+    const getArchivedEntriesDays = async () => {
+      dispatch(archivedDaysActions.init())
+      api
+        .getArchivedDays()
+        .then(days => {
+          dispatch(archivedDaysActions.success(days))
+          pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
+        })
+        .catch(e => dispatch(archivedDaysActions.failure(e)))
+    }
+
     getArchivedEntriesDays()
-  }, [])
+  }, [dispatch])
 
   const deleteEntry = entry => {
     dispatch(deleteActions.init())

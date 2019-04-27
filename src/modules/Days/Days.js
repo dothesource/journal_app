@@ -30,16 +30,6 @@ const Days = () => {
   const inputRef = useRef()
   const [shouldCreateNewEntry, setShouldCreateNewEntry] = useState(true)
   const [currentEntry, setCurrentEntry] = useState('')
-  const getDays = async () => {
-    dispatch(daysActions.init())
-    api
-      .getDays()
-      .then(days => {
-        dispatch(daysActions.success(days))
-        pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
-      })
-      .catch(e => dispatch(daysActions.failure(e)))
-  }
 
   const handleInputChange = event => {
     setCurrentEntry(event.target.value)
@@ -93,8 +83,18 @@ const Days = () => {
   }
 
   useEffect(() => {
+    const getDays = async () => {
+      dispatch(daysActions.init())
+      api
+        .getDays()
+        .then(days => {
+          dispatch(daysActions.success(days))
+          pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
+        })
+        .catch(e => dispatch(daysActions.failure(e)))
+    }
     getDays()
-  }, [])
+  }, [dispatch])
 
   const updatePreviousEntry = async () => {
     const lastDay = last(days)

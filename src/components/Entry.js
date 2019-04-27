@@ -46,13 +46,13 @@ const Entry = ({
     if (debouncedTextEdit && text !== entry.text && focused) {
       updateEntryText(entry, debouncedTextEdit)
     }
-  }, [debouncedTextEdit])
+  }, [debouncedTextEdit, entry, focused, text, updateEntryText])
 
   useEffect(() => {
     if (entry.text !== text && focused === false) {
       setText(entry.text)
     }
-  })
+  }, [entry.text, text, focused])
   const onFocus = () => {
     setFocused(true)
   }
