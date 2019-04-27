@@ -49,7 +49,8 @@ const routes = [
     text: 'Home',
     path: '/'
   },
-  { icon: 'archive', text: 'Archived', path: '/archived' }
+  { icon: 'archive', text: 'Archived', path: '/archived' },
+  { icon: 'search', text: 'Search', path: '/search' }
 ]
 
 const DrawerNav = () => {

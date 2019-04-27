@@ -4,6 +4,10 @@ export function getDays() {
   return makeRequest({ path: 'days.json', cacheId: 'days' })
 }
 
+export function getDay(id) {
+  return makeRequest({ path: `days/${id}.json` })
+}
+
 export function saveEntry(entry) {
   return makeRequest({
     path: 'entries.json',

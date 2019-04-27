@@ -32,7 +32,9 @@ const Entry = ({
   updateEntryText,
   archiveEntry,
   unarchiveEntry,
-  isArchived
+  isArchived,
+  noActions,
+  entryOnClick
 }) => {
   const [focused, setFocused] = useState(false)
   const inputRef = useRef(null)
@@ -65,6 +67,7 @@ const Entry = ({
   const onArchive = () => archiveEntry(entry)
 
   const cardActionButtons = () => {
+    if (noActions) return
     if (isArchived) {
       return (
         <Fragment>
@@ -78,7 +81,7 @@ const Entry = ({
   }
 
   return (
-    <EntryCard onClick={focusTextArea}>
+    <EntryCard onClick={entryOnClick ? entryOnClick : focusTextArea}>
       <TextArea
         onFocus={onFocus}
         onBlur={onBlur}
