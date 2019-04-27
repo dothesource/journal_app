@@ -1,5 +1,5 @@
 import AsyncStorage from '@callstack/async-storage'
-const URL = 'https://nuleaf-journal-app.herokuapp.com/'
+const URL = 'https://nuleaf-journal-app.herokuapp.com'
 // const URL = 'http://localhost:4000'
 
 export async function getCached(cacheId) {
