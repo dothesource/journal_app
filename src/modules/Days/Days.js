@@ -137,17 +137,21 @@ const Days = () => {
 
   const shiftPressed = useKeyPress('Shift')
 
+  const saveEntryToPrev = () => {
+    if (shouldCreateNewEntry === true || shiftPressed) {
+      saveEntry()
+    } else {
+      updatePreviousEntry()
+    }
+  }
+
   const _handleKeyPress = e => {
     if (shouldCreateNewEntry === false) {
       setShouldCreateNewEntry(false)
       delayNewEntry()
     }
     if (e.key === 'Enter' && focused) {
-      if (shouldCreateNewEntry === true || shiftPressed) {
-        saveEntry()
-      } else {
-        updatePreviousEntry()
-      }
+      saveEntryToPrev()
     }
   }
 
@@ -194,7 +198,7 @@ const Days = () => {
           handleInputChange={handleInputChange}
           handleKeyPress={_handleKeyPress}
           currentEntry={currentEntry}
-          saveEntry={saveEntry}
+          saveEntry={saveEntryToPrev}
         />
       </Container>
     </div>
