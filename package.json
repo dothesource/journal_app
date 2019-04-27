@@ -8,6 +8,7 @@
     "@reach/router": "^1.2.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-headroom": "^2.2.8",
     "react-loader-spinner": "^2.3.0",
     "react-motion-drawer": "^3.1.0",
     "react-scripts": "^3.0.0",

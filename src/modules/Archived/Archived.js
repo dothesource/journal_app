@@ -64,19 +64,21 @@ const Archived = () => {
   }
 
   return (
-    <Container>
+    <div>
       <AppBar title="Archived" />
-      {archivedEntriesDays.map(day => (
-        <Day
-          key={`day-${day.id}`}
-          day={day}
-          deleteEntry={deleteEntry}
-          updateEntryText={updateEntryText}
-          unarchiveEntry={unarchiveEntry}
-        />
-      ))}
-      <div style={{ float: 'left', clear: 'both' }} ref={pageEndRef} />
-    </Container>
+      <Container>
+        {archivedEntriesDays.map(day => (
+          <Day
+            key={`day-${day.id}`}
+            day={day}
+            deleteEntry={deleteEntry}
+            updateEntryText={updateEntryText}
+            unarchiveEntry={unarchiveEntry}
+          />
+        ))}
+        <div style={{ float: 'left', clear: 'both' }} ref={pageEndRef} />
+      </Container>
+    </div>
   )
 }
 

@@ -168,34 +168,36 @@ const Days = () => {
   }
 
   return (
-    <Container>
+    <div>
       <AppBar
         title="Entries"
         actions={[{ onClick: addEmptyEntry, iconName: 'add' }]}
       />
-      {daysLoading ? (
-        <SelfCentered>
-          <Loader type="ThreeDots" color="#282c34" height="100" width="100" />
-        </SelfCentered>
-      ) : (
-        <DayList
-          days={days}
-          updateEntryText={updateEntryText}
-          archiveEntry={archiveEntry}
-        />
-      )}
+      <Container>
+        {daysLoading ? (
+          <SelfCentered>
+            <Loader type="ThreeDots" color="#282c34" height="100" width="100" />
+          </SelfCentered>
+        ) : (
+          <DayList
+            days={days}
+            updateEntryText={updateEntryText}
+            archiveEntry={archiveEntry}
+          />
+        )}
 
-      <div style={{ float: 'left', clear: 'both' }} ref={pageEndRef} />
-      <Footer
-        ref={inputRef}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        handleInputChange={handleInputChange}
-        handleKeyPress={_handleKeyPress}
-        currentEntry={currentEntry}
-        saveEntry={saveEntry}
-      />
-    </Container>
+        <div style={{ float: 'left', clear: 'both' }} ref={pageEndRef} />
+        <Footer
+          ref={inputRef}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          handleInputChange={handleInputChange}
+          handleKeyPress={_handleKeyPress}
+          currentEntry={currentEntry}
+          saveEntry={saveEntry}
+        />
+      </Container>
+    </div>
   )
 }
 

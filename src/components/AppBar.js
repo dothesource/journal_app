@@ -2,19 +2,18 @@ import React, { useContext } from 'react'
 import { Store } from '../store'
 import { OPEN_DRAWER } from '../store/reducers/drawer'
 import styled from 'styled-components'
-import Elevated from './Elevated'
 import MaterialIcon from './MaterialIcon'
+import Headroom from 'react-headroom'
 
-const AppBarContainer = styled(Elevated)`
-  display: flex;
-  height: 56px;
-  background-color: #282c34;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-`
+const headRoomStyles = {
+  boxShadow:
+    '0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12)',
+  height: '56px',
+  backgroundColor: '#282c34',
+  display: 'flex',
+  alignItems: 'center',
+  flexDirection: 'row'
+}
 
 const AppBarIcon = styled(MaterialIcon)`
   color: white;
@@ -34,7 +33,7 @@ const AppBar = ({ actions = [], title }) => {
   const openDrawer = () => dispatch({ type: OPEN_DRAWER })
 
   return (
-    <AppBarContainer>
+    <Headroom style={headRoomStyles}>
       <AppBarIcon onClick={openDrawer}>menu</AppBarIcon>
       <AppBarTitle>{title}</AppBarTitle>
       <div>
@@ -44,7 +43,7 @@ const AppBar = ({ actions = [], title }) => {
           </AppBarIcon>
         ))}
       </div>
-    </AppBarContainer>
+    </Headroom>
   )
 }
 
