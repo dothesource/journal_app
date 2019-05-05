@@ -9,7 +9,8 @@ const initialState = {
   archived: [],
   daysLoading: true,
   daysError: false,
-  drawerOpen: false
+  drawerOpen: false,
+  path: '/'
 }
 
 const reducer = (state = initialState, action) => {

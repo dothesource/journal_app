@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import Drawer from 'react-motion-drawer'
 import { Store } from '../store'
-import { CLOSE_DRAWER } from '../store/reducers/drawer'
+import { CLOSE_DRAWER, NAVIGATE_TO } from '../store/reducers/drawer'
 import { navigate } from '@reach/router'
 import styled from 'styled-components'
 import MaterialIcon from './MaterialIcon'
@@ -11,31 +11,46 @@ const DrawerNavigator = styled(Drawer)`
 `
 
 const DrawerContent = styled.div`
-  padding: 16px;
+  padding: 16px 0px;
 `
 
 const DrawerHeader = styled.h3`
   font-size: 20px;
+  margin-left: 16px;
+  margin-bottom: 0px;
+`
+const DrawerSubHeader = styled.h4`
+  color: #0000008a;
+  font-size: 13px;
+  margin-left: 16px;
+  margin-bottom: 18px;
 `
 
 const Item = styled.div`
   display: flex;
   align-items: center;
   flex: 1;
+  margin: 8px 4px;
+  padding-left: 12px;
   cursor: pointer;
+  background-color: ${props => (props.selected ? '#282c34' : 'white')};
+  color: ${props => (props.selected ? 'white' : '#282c34')};
+  border-radius: 8px;
+  height: 48px;
 `
 
 const DrawerIcon = styled(MaterialIcon)`
-  padding: 16px 32px 16px 0px;
+  padding: 8px 32px 8px 0px;
 `
 
-const DrawerItem = ({ iconName, title, path, dispatch }) => {
+const DrawerItem = ({ iconName, title, path, dispatch, selected }) => {
   return (
     <Item
       onClick={() => {
-        dispatch({ type: CLOSE_DRAWER })
+        dispatch({ type: NAVIGATE_TO, path })
         navigate(path)
       }}
+      selected={selected}
     >
       <DrawerIcon>{iconName}</DrawerIcon>
       <span>{title}</span>
@@ -55,11 +70,11 @@ const routes = [
 
 const DrawerNav = () => {
   const {
-    state: { drawerOpen },
+    state: { drawerOpen, path: currentPath },
     dispatch
   } = useContext(Store)
 
-  const drawerOnChange = thing => {
+  const drawerOnChange = () => {
     if (drawerOpen === true) dispatch({ type: CLOSE_DRAWER })
   }
 
@@ -67,6 +82,7 @@ const DrawerNav = () => {
     <DrawerNavigator open={drawerOpen} onChange={drawerOnChange}>
       <DrawerContent>
         <DrawerHeader>Journal</DrawerHeader>
+        <DrawerSubHeader>Navigate</DrawerSubHeader>
         {routes.map(({ icon, text, path }) => (
           <DrawerItem
             key={path + text}
@@ -74,6 +90,7 @@ const DrawerNav = () => {
             iconName={icon}
             title={text}
             dispatch={dispatch}
+            selected={path === currentPath}
           />
         ))}
       </DrawerContent>
