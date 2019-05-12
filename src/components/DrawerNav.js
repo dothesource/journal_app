@@ -1,7 +1,12 @@
 import React, { useContext } from 'react'
-import Drawer from 'react-motion-drawer'
+// import Drawer from 'react-motion-drawer'
+import { default as Drawer } from './SideBar'
 import { Store } from '../store'
-import { CLOSE_DRAWER, NAVIGATE_TO } from '../store/reducers/drawer'
+import {
+  CLOSE_DRAWER,
+  NAVIGATE_TO,
+  OPEN_DRAWER
+} from '../store/reducers/drawer'
 import { navigate } from '@reach/router'
 import styled from 'styled-components'
 import MaterialIcon from './MaterialIcon'
@@ -68,7 +73,7 @@ const routes = [
   { icon: 'search', text: 'Search', path: '/search' }
 ]
 
-const DrawerNav = () => {
+const DrawerNav = ({ children }) => {
   const {
     state: { drawerOpen, path: currentPath },
     dispatch
@@ -78,23 +83,41 @@ const DrawerNav = () => {
     if (drawerOpen === true) dispatch({ type: CLOSE_DRAWER })
   }
 
+  const setDrawer = open => {
+    if (open) {
+      dispatch({ type: OPEN_DRAWER })
+    } else {
+      dispatch({ type: CLOSE_DRAWER })
+    }
+  }
+
   return (
-    <DrawerNavigator open={drawerOpen} onChange={drawerOnChange}>
-      <DrawerContent>
-        <DrawerHeader>Journal</DrawerHeader>
-        <DrawerSubHeader>Navigate</DrawerSubHeader>
-        {routes.map(({ icon, text, path }) => (
-          <DrawerItem
-            key={path + text}
-            path={path}
-            iconName={icon}
-            title={text}
-            dispatch={dispatch}
-            selected={path === currentPath}
-          />
-        ))}
-      </DrawerContent>
+    <DrawerNavigator
+      // onClick={e => e.stopPropagation()}
+      visible={drawerOpen}
+      setVisible={setDrawer}
+      sidebarContent={<Content dispatch={dispatch} currentPath={currentPath} />}
+    >
+      {children}
     </DrawerNavigator>
   )
 }
+
+const Content = ({ dispatch, currentPath }) => (
+  <DrawerContent>
+    <DrawerHeader>Journal</DrawerHeader>
+    <DrawerSubHeader>Navigate</DrawerSubHeader>
+    {routes.map(({ icon, text, path }) => (
+      <DrawerItem
+        key={path + text}
+        path={path}
+        iconName={icon}
+        title={text}
+        dispatch={dispatch}
+        selected={path === currentPath}
+      />
+    ))}
+  </DrawerContent>
+)
+
 export default DrawerNav

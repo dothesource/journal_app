@@ -10,13 +10,14 @@ import { StoreProvider } from './store'
 const App = () => {
   return (
     <StoreProvider>
-      <Router>
-        <Days path="/" />
-        <Archived path="/archived" />
-        <Search path="/search" />
-        <Day path="/day/:dayId" />
-      </Router>
-      <DrawerNav />
+      <DrawerNav>
+        <Router>
+          <Days path="/" />
+          <Archived path="/archived" />
+          <Search path="/search" />
+          <Day path="/day/:dayId" />
+        </Router>
+      </DrawerNav>
     </StoreProvider>
   )
 }

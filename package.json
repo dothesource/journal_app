@@ -6,11 +6,11 @@
     "@callstack/async-storage": "^1.1.0",
     "@material/react-card": "^0.11.0",
     "@reach/router": "^1.2.1",
+    "body-scroll-lock": "^2.6.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-headroom": "^2.2.8",
     "react-loader-spinner": "^2.3.0",
-    "react-motion-drawer": "^3.1.0",
     "react-scripts": "^3.0.0",
     "react-textarea-autosize": "^7.1.0",
     "styled-components": "^4.2.0"
