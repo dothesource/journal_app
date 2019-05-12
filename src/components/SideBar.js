@@ -20,8 +20,7 @@ const Overlay = styled.div`
   top: 0;
   bottom: 0;
   left: 0;
-  right: 0;
-  pointer-events: none;
+  width: ${props => (props.visible ? '100%' : '0')};
   background-color: ${props =>
     props.visible ? 'rgba(10, 10, 10, 0.3)' : 'rgba(10, 10, 10, 0)'};
   z-index: 99;
@@ -64,6 +63,9 @@ const SideBar = ({
       setStartX(ev.clientX)
       setCurrentX(ev.clientX)
     }
+    if (visible && body) {
+      disableBodyScroll(body.current)
+    }
   }
 
   const onMove = ev => {
@@ -103,38 +105,41 @@ const SideBar = ({
 
   const body = useRef(null)
 
+  const events = {
+    onTouchStart: onStart,
+    onMouseDown: onStart,
+    onMouseMove: onMove,
+    onTouchMove: onMove,
+    onMouseUp: onEnd,
+    onTouchEnd: onEnd
+  }
+
   return (
     <div ref={body}>
       <Container
-        onTouchStart={onStart}
-        onMouseDown={onStart}
-        onMouseMove={onMove}
-        onTouchMove={onMove}
-        onMouseUp={onEnd}
-        onTouchEnd={onEnd}
+        onClick={e => {
+          if (visible) {
+            e.stopPropagation()
+          }
+        }}
+        {...events}
       >
-        <SideBarContainer
-          onClick={e => e.stopPropagation()}
-          visible={visible}
-          className={className}
-        >
+        <SideBarContainer visible={visible} className={className}>
           {sidebarContent}
         </SideBarContainer>
-        <div
-          onClick={e => {
+
+        <div>{children}</div>
+      </Container>
+      <Overlay
+        visible={visible}
+        onClick={e => {
+          if (visible) {
             setVisible(false)
             e.stopPropagation()
-          }}
-          onTouchStart={ev => {
-            if (visible && body) {
-              disableBodyScroll(body.current)
-            }
-          }}
-        >
-          {children}
-        </div>
-      </Container>
-      <Overlay visible={visible} />
+          }
+        }}
+        {...events}
+      />
     </div>
   )
 }

@@ -30,7 +30,9 @@ const AppBarTitle = styled.div`
 const AppBar = ({ actions = [], title }) => {
   const { dispatch } = useContext(Store)
 
-  const openDrawer = () => dispatch({ type: OPEN_DRAWER })
+  const openDrawer = () => {
+    dispatch({ type: OPEN_DRAWER })
+  }
 
   return (
     <Headroom style={headRoomStyles}>
