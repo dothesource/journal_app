@@ -27,11 +27,17 @@ const Overlay = styled.div`
   z-index: 99;
 `
 
+const Container = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+`
+
 const SideBar = ({ visible, setVisible, children, sidebarContent }) => {
   useEffect(() => {
-    if (!visible) {
-      clearAllBodyScrollLocks()
-    }
+    clearAllBodyScrollLocks()
   }, [visible])
 
   const [identifier, setIdentifier] = useState(null)
@@ -73,7 +79,7 @@ const SideBar = ({ visible, setVisible, children, sidebarContent }) => {
     const diff = startX != null ? currentX - startX : 0
     if (!visible && diff > 20) {
       setVisible(true)
-    } else if (visible && diff < 10) {
+    } else if (visible && diff < -20) {
       setVisible(false)
     }
     if (isTouching) {
@@ -90,13 +96,8 @@ const SideBar = ({ visible, setVisible, children, sidebarContent }) => {
   }
 
   return (
-    <div
-      onTouchStart={ev => {
-        disableBodyScroll(ev.target)
-      }}
-    >
-      <div
-        style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }}
+    <div>
+      <Container
         onTouchStart={onStart}
         onMouseDown={onStart}
         onMouseMove={onMove}
@@ -107,14 +108,21 @@ const SideBar = ({ visible, setVisible, children, sidebarContent }) => {
         <SideBarContainer onClick={e => e.stopPropagation()} visible={visible}>
           {sidebarContent}
         </SideBarContainer>
-        {children}
-      </div>
-      <Overlay
-        visible={visible}
-        onClick={() => {
-          setVisible(false)
-        }}
-      />
+        <div
+          onClick={e => {
+            setVisible(false)
+            e.stopPropagation()
+          }}
+          onTouchStart={ev => {
+            if (visible) {
+              disableBodyScroll(ev.target)
+            }
+          }}
+        >
+          {children}
+        </div>
+      </Container>
+      <Overlay visible={visible} />
     </div>
   )
 }

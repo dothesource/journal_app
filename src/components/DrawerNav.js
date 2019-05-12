@@ -79,10 +79,6 @@ const DrawerNav = ({ children }) => {
     dispatch
   } = useContext(Store)
 
-  const drawerOnChange = () => {
-    if (drawerOpen === true) dispatch({ type: CLOSE_DRAWER })
-  }
-
   const setDrawer = open => {
     if (open) {
       dispatch({ type: OPEN_DRAWER })
@@ -93,7 +89,6 @@ const DrawerNav = ({ children }) => {
 
   return (
     <DrawerNavigator
-      // onClick={e => e.stopPropagation()}
       visible={drawerOpen}
       setVisible={setDrawer}
       sidebarContent={<Content dispatch={dispatch} currentPath={currentPath} />}
