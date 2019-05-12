@@ -5,9 +5,9 @@ import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 const SideBarContainer = styled.aside`
   position: fixed;
   top: 0;
-  left: ${props => (props.visible ? '0' : '-300px')};
+  left: ${({ visible, width }) => (visible ? '0' : '-' + width + 'px')};
   bottom: 0;
-  width: 300px;
+  width: ${({ width }) => width + 'px'};
   background-color: white;
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
     0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
@@ -39,7 +39,8 @@ const SideBar = ({
   setVisible,
   children,
   sidebarContent,
-  className
+  className,
+  width = 300
 }) => {
   useEffect(() => {
     clearAllBodyScrollLocks()
@@ -124,7 +125,7 @@ const SideBar = ({
         }}
         {...events}
       >
-        <SideBarContainer visible={visible} className={className}>
+        <SideBarContainer width={width} visible={visible} className={className}>
           {sidebarContent}
         </SideBarContainer>
 
