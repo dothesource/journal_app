@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 
@@ -35,7 +35,13 @@ const Container = styled.div`
   bottom: 0;
 `
 
-const SideBar = ({ visible, setVisible, children, sidebarContent }) => {
+const SideBar = ({
+  visible,
+  setVisible,
+  children,
+  sidebarContent,
+  className
+}) => {
   useEffect(() => {
     clearAllBodyScrollLocks()
   }, [visible])
@@ -95,8 +101,10 @@ const SideBar = ({ visible, setVisible, children, sidebarContent }) => {
     }
   }
 
+  const body = useRef(null)
+
   return (
-    <div>
+    <div ref={body}>
       <Container
         onTouchStart={onStart}
         onMouseDown={onStart}
@@ -105,7 +113,11 @@ const SideBar = ({ visible, setVisible, children, sidebarContent }) => {
         onMouseUp={onEnd}
         onTouchEnd={onEnd}
       >
-        <SideBarContainer onClick={e => e.stopPropagation()} visible={visible}>
+        <SideBarContainer
+          onClick={e => e.stopPropagation()}
+          visible={visible}
+          className={className}
+        >
           {sidebarContent}
         </SideBarContainer>
         <div
@@ -114,8 +126,8 @@ const SideBar = ({ visible, setVisible, children, sidebarContent }) => {
             e.stopPropagation()
           }}
           onTouchStart={ev => {
-            if (visible) {
-              disableBodyScroll(ev.target)
+            if (visible && body) {
+              disableBodyScroll(body.current)
             }
           }}
         >
