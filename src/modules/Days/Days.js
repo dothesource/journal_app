@@ -15,7 +15,7 @@ import AppBar from '../../components/AppBar'
 import Container from '../../components/Container'
 import styled from 'styled-components'
 import Footer from './Footer'
-const NEW_ENTRY_DELAY = 5 * 60 * 1000
+const NEW_ENTRY_DELAY = 5 * 60 * 1000 // 5 * minutes * in miliseconds
 
 const SelfCentered = styled.div`
   align-self: center;
