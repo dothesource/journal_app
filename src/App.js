@@ -6,6 +6,7 @@ import Day from './modules/Day'
 import Days from './modules/Days'
 import Search from './modules/Search'
 import Signup from './modules/Signup'
+import Login from './modules/Login'
 import { StoreProvider } from './store'
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
         <Search path="/search" />
         <Day path="/day/:dayId" />
         <Signup path="/signup" />
+        <Login path="/login" />
       </Router>
       <DrawerNav />
     </StoreProvider>

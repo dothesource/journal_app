@@ -1,14 +1,14 @@
 import * as day from './days'
 import * as archived from './archived'
 import * as search from './search'
-import * as registration from './registration'
+import * as authentication from './authentication'
 export * from './api'
 
 const api = {
   ...day,
   ...archived,
   ...search,
-  ...registration
+  ...authentication
 }
 
 export default api
