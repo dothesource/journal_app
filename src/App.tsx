@@ -1,26 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Router } from '@reach/router'
+import React from 'react'
+import DrawerNav from './components/DrawerNav'
+import Archived from './modules/Archived'
+import Day from './modules/Day'
+import Days from './modules/Days'
+import Search from './modules/Search'
+import { StoreProvider } from './store'
+// import logo from './logo.svg';
+// import './App.css';
 
 const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <StoreProvider>
+      <DrawerNav>
+        <Router>
+          <Days path="/" />
+          <Archived path="/archived" />
+          <Search path="/search" />
+          <Day path="/day/:dayId" />
+        </Router>
+      </DrawerNav>
+    </StoreProvider>
+  )
 }
 
 export default App;

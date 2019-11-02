@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import Entry from './Entry'
+import Entry from './Entry.tsx'
 import styled from 'styled-components'
 const DayTitle = styled.h5`
   user-select: none;

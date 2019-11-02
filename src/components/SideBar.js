@@ -88,7 +88,11 @@ const SideBar = ({
     const open_boundry = isTouching ? 100 : 20
     const diff = startX != null ? currentX - startX : 0
     if (!visible && diff > open_boundry) {
-      setVisible(true)
+      if (isClicking && startX < 300) {
+        setVisible(true)
+      } else if (isTouching) {
+        setVisible(true)
+      }
     } else if (visible && diff < -open_boundry) {
       setVisible(false)
     }

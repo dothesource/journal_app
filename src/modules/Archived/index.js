@@ -1,1 +1,1 @@
-export { default } from './Archived'
+export { default } from './Archived.tsx'

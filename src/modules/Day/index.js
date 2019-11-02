@@ -1,1 +1,1 @@
-export { default } from './Day'
+export { default } from './Day.tsx'

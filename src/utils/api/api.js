@@ -1,29 +1,29 @@
-import AsyncStorage from '@callstack/async-storage'
+// import AsyncStorage from '@callstack/async-storage'
 const URL = 'https://nuleaf-journal-app.herokuapp.com'
 // const URL = 'http://localhost:4000'
 
-export async function getCached(cacheId) {
-  if (cacheId === undefined) return cacheId
-  const cachedResp = await AsyncStorage.getItem(cacheId)
-  if (cachedResp) {
-    try {
-      const response = JSON.parse(cachedResp)
-      return response
-    } catch (error) {
-      console.log('could not parse cached response')
-      return undefined
-    }
-  }
-}
+// export async function getCached(cacheId) {
+//   if (cacheId === undefined) return cacheId
+//   const cachedResp = await AsyncStorage.getItem(cacheId)
+//   if (cachedResp) {
+//     try {
+//       const response = JSON.parse(cachedResp)
+//       return response
+//     } catch (error) {
+//       console.log('could not parse cached response')
+//       return undefined
+//     }
+//   }
+// }
 
-export async function setCached(cacheId, value) {
-  const string_value = JSON.stringify(value)
-  AsyncStorage.setItem(cacheId, string_value)
-    .then(() => {
-      console.log(cacheId, 'cached')
-    })
-    .catch(() => {})
-}
+// export async function setCached(cacheId, value) {
+//   const string_value = JSON.stringify(value)
+//   AsyncStorage.setItem(cacheId, string_value)
+//     .then(() => {
+//       console.log(cacheId, 'cached')
+//     })
+//     .catch(() => {})
+// }
 
 export async function makeRequest({
   path,

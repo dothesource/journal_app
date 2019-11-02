@@ -1,66 +1,24 @@
-import createAsyncAction from '../../utils/createAsyncAction'
-import { updateDay, updateEntry } from './shared'
+import { createActionFunction } from '../../utils/createActions'
+import { updateEntry, addEntry } from './shared.ts'
 
-export const daysActions = createAsyncAction('days')
+const ADD_ENTRY = 'ADD_ENTRY'
+export const actionAddEntry = createActionFunction(ADD_ENTRY)
 
-export const archiveActions = createAsyncAction('archiveEntry')
-
-export const saveActions = createAsyncAction('saveEntry')
-
-export const updateActions = createAsyncAction('updateEntry')
+const UPDATE_ENTRY = 'UPDATE_ENTRY'
+export const actionUpdateEntry = createActionFunction(UPDATE_ENTRY)
 
 export function days_reducer(state, action) {
   switch (action.type) {
-    case daysActions.init_action:
+    case ADD_ENTRY:
       return {
         ...state,
-        daysLoading: true,
-        daysError: false
+        days: addEntry(action.payload, state.days)
       }
-    case daysActions.success_action:
-      return {
-        ...state,
-        daysLoading: false,
-        daysError: false,
-        days: action.payload
-      }
-    case daysActions.failure_action:
-      return {
-        ...state,
-        daysLoading: false,
-        daysError: true
-      }
-    case archiveActions.init_action:
-      return {
-        ...state
-      }
-    case archiveActions.success_action:
-      return {
-        ...state,
-        days: updateDay(action.payload, state.days)
-      }
-    case archiveActions.failure_action:
-      return {
-        ...state
-      }
-    case saveActions.init_action:
-      return state
-    case saveActions.success_action:
-      return {
-        ...state,
-        days: updateDay(action.payload, state.days)
-      }
-    case saveActions.failure_action:
-      return state
-    case updateActions.init_action:
-      return state
-    case updateActions.success_action:
+    case UPDATE_ENTRY:
       return {
         ...state,
         days: updateEntry(action.payload, state.days)
       }
-    case updateActions.failure_action:
-      return state
     default:
       return state
   }
