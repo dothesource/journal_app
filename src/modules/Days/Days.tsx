@@ -3,8 +3,7 @@ import React, {
   useState,
   useEffect,
   useRef,
-  useContext,
-  useCallback
+  useContext
 } from 'react'
 // import api from '../../utils/api'
 import { last } from '../../utils/generic'
@@ -171,10 +170,6 @@ const Days: FunctionComponent<RouterProps> = () => {
       pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const updateEntryTextCallback = useCallback((entry: IEntry, text: string) => {
-    updateEntryText(entry, text)
-  }, [])
-
   return (
     <div>
       <AppBar
@@ -187,11 +182,7 @@ const Days: FunctionComponent<RouterProps> = () => {
             <Loader type="ThreeDots" color="#282c34" height="100" width="100" />
           </SelfCentered>
         ) : (
-          <DayList
-            days={days}
-            updateEntryText={updateEntryTextCallback}
-            archiveEntry={archiveEntry}
-          />
+          <DayList days={days} archiveEntry={archiveEntry} />
         )}
 
         <div style={{ float: 'left', clear: 'both' }} ref={pageEndRef} />
