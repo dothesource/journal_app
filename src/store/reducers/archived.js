@@ -1,3 +1,5 @@
+import { createActionFunction } from '../../utils/createActions'
+
 // import createAsyncAction from '../../utils/createAsyncAction'
 // import { updateDay, updateEntry } from './shared'
 
@@ -8,6 +10,22 @@
 // export const updateArchivedActions = createAsyncAction('updateArchivedEntry')
 
 // export const unArchiveActions = createAsyncAction('unArchiveEntry')
+
+// const ARCHIVE_ENTRY = 'ARCHIVE_ENTRY'
+// export const actionArchiveEntry = createActionFunction(ARCHIVE_ENTRY)
+
+// function archiveEntry(entry, archived, days) {}
+
+// export function archived_reducer(state, action) {
+//   switch (action.type) {
+//     case ARCHIVE_ENTRY:
+//       return {
+//         ...state,
+//         archived: archiveEntry(action.payload, state.archived)
+//         days:
+//       }
+//   }
+// }
 
 // export function archived_reducer(state, action) {
 //   switch (action.type) {

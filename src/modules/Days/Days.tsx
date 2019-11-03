@@ -5,12 +5,15 @@ import React, {
   useRef,
   useContext
 } from 'react'
-// import api from '../../utils/api'
 import { last } from '../../utils/generic'
 import useKeyPress from '../../utils/use_key_press'
 import { Store } from '../../store'
 import Loader from 'react-loader-spinner'
-import { actionAddEntry, actionUpdateEntry } from '../../store/reducers/days'
+import {
+  actionAddEntry,
+  actionUpdateEntry,
+  actionArchiveEntry
+} from '../../store/reducers/days'
 import DayList from './DayList'
 import AppBar from '../../components/AppBar'
 import Container from '../../components/Container'
@@ -26,11 +29,6 @@ const SelfCentered = styled.div`
   align-self: center;
 `
 
-// const attachDispatchToAction = (
-//   actionFunction: Function,
-//   dispatch: Function
-// ) => (payload: any) => actionFunction(payload, dispatch)
-
 const Days: FunctionComponent<RouterProps> = () => {
   const {
     state: { days, daysLoading },
@@ -40,16 +38,6 @@ const Days: FunctionComponent<RouterProps> = () => {
   const inputRef = useRef<HTMLDivElement>(null)
   const [shouldCreateNewEntry, setShouldCreateNewEntry] = useState(true)
   const [currentEntry, setCurrentEntry] = useState('')
-
-  // const dispatchAddEntry = attachDispatchToAction(actionAddEntry, dispatch)
-  // const dispatchUpdateEntry = attachDispatchToAction(
-  //   actionUpdateEntry,
-  //   dispatch
-  // )
-  // const dispatchArchiveEntry = attachDispatchToAction(
-  //   actionArchiveEntry,
-  //   dispatch
-  // )
 
   const handleInputChange = (event: any) => {
     setCurrentEntry(event.target.value)
@@ -70,24 +58,19 @@ const Days: FunctionComponent<RouterProps> = () => {
   }
 
   const archiveEntry = (entry: IEntry) => {
-    // dispatch(archiveActions.init())
-    // api
-    //   .archiveEntry(entry)
-    //   .then(day => {
-    // dispatchArchiveEntry(entry)
-    // const last_day = last(days)
-    // const last_entry = !!last_day ? last(last_day.entries) : undefined
-    // if (last_entry !== undefined && entry.id === last_entry.id) {
-    //   setShouldCreateNewEntry(true)
-    // }
-    // })
-    // .catch(e => dispatch(archiveActions.failure(e)))
+    actionArchiveEntry(entry, dispatch)
+    const last_day = last(days)
+    const last_entry = !!last_day ? last(last_day.entries) : undefined
+    if (last_entry !== undefined && entry.id === last_entry.id) {
+      setShouldCreateNewEntry(true)
+    }
   }
 
+  // TODO: useeffect to load days from indexedDB
   // useEffect(() => {
   //   const getDays = async () => {
   //     dispatch(daysActions.init())
-  //     api
+  //     indexedDBThing
   //       .getDays()
   //       .then(days => {
   //         dispatch(daysActions.success(days))

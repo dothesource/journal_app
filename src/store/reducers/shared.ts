@@ -54,7 +54,8 @@ export function addEntry(entryText: string, days: IDay[]) {
     day_id: '',
     datetime: new Date(),
     created_at: new Date(),
-    updated_at: new Date()
+    updated_at: new Date(),
+    archived_at: undefined
   }
   console.log(days)
   if (!arrayIsValid(days)) {

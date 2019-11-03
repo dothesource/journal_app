@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, useContext, FunctionComponent } from 'react'
+import React, {
+  useEffect,
+  useRef,
+  useContext,
+  FunctionComponent,
+  useMemo
+} from 'react'
 // import api from '../../utils/api'
 import Day from '../../components/Day'
 import { Store } from '../../store'
@@ -13,13 +19,21 @@ import Container from '../../components/Container'
 import { IEntry } from '../../interfaces/IEntry'
 import { IDay } from '../../interfaces/IDay'
 import { RouterProps } from '../../interfaces/IRouter'
+import { arrayIsValid } from '../../utils/generic'
 
 const Archived: FunctionComponent<RouterProps> = () => {
   const pageEndRef = useRef<HTMLDivElement>(null)
-  const {
-    state: { archived: archivedEntriesDays },
-    dispatch
-  } = useContext(Store)
+  const { state, dispatch } = useContext(Store)
+
+  const days: IDay[] = state.days
+  const archivedEntriesDays = arrayIsValid(days)
+    ? days.filter(d => d.entries.some(e => e.archived_at !== undefined))
+    : []
+  // useMemo(() => {
+  //   if (arrayIsValid(days))
+  //     return days.filter(d => d.entries.some(e => e.archived_at !== undefined))
+  //   else return []
+  // }, [days])
 
   useEffect(() => {
     // const getArchivedEntriesDays = async () => {
@@ -76,6 +90,7 @@ const Archived: FunctionComponent<RouterProps> = () => {
             deleteEntry={deleteEntry}
             updateEntryText={updateEntryText}
             unarchiveEntry={unarchiveEntry}
+            showArchived={true}
           />
         ))}
         <div style={{ float: 'left', clear: 'both' }} ref={pageEndRef} />
