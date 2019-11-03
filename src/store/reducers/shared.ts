@@ -57,9 +57,7 @@ export function addEntry(entryText: string, days: IDay[]) {
     updated_at: new Date(),
     archived_at: undefined
   }
-  console.log(days)
   if (!arrayIsValid(days)) {
-    console.log('im here')
     const newDayId = uuidv4()
     daysForUpdate = [
       {
@@ -90,6 +88,5 @@ export function addEntry(entryText: string, days: IDay[]) {
       throw Error('day not found')
     }
   }
-  console.log(daysForUpdate)
   return daysForUpdate
 }
