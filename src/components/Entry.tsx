@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, Fragment, useContext } from 'react'
+import React, { useState, useRef, useEffect, Fragment } from 'react'
 import Card, { CardActions, CardActionIcons } from '@material/react-card'
 import '@material/react-card/dist/card.css'
 import TextareaAutosize from 'react-textarea-autosize'
@@ -6,9 +6,6 @@ import useDebounce from '../utils/use_debounce'
 import MaterialIcon from './MaterialIcon'
 import styled from 'styled-components'
 import { IEntry } from '../interfaces/IEntry'
-
-import { actionUpdateEntry } from '../store/reducers/days'
-import { Store } from '../store'
 
 const CardIcon = styled(MaterialIcon)`
   color: grey;
@@ -45,7 +42,7 @@ interface EntryProps {
 const Entry = ({
   entry,
   deleteEntry,
-  // updateEntryText,
+  updateEntryText,
   archiveEntry,
   unarchiveEntry,
   isArchived,
@@ -53,7 +50,6 @@ const Entry = ({
   entryOnClick
 }: EntryProps) => {
   const [focused, setFocused] = useState(false)
-  const { dispatch } = useContext(Store)
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const focusTextArea = () => {
     if (inputRef) inputRef.current!.focus()
@@ -62,12 +58,15 @@ const Entry = ({
   const debouncedTextEdit = useDebounce(text, 500)
 
   useEffect(() => {
-    if (debouncedTextEdit && text !== entry.text && focused) {
-      if (!isArchived) {
-        actionUpdateEntry({ entry, text: debouncedTextEdit }, dispatch)
-      }
+    if (
+      debouncedTextEdit &&
+      text !== entry.text &&
+      focused &&
+      updateEntryText
+    ) {
+      updateEntryText(entry, text)
     }
-  }, [debouncedTextEdit, dispatch, entry, focused, isArchived, text])
+  }, [debouncedTextEdit, entry, focused, isArchived, text, updateEntryText])
 
   useEffect(() => {
     if (entry.text !== text && focused === false) {
