@@ -1,11 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, FunctionComponent } from 'react'
 import Container from '../../components/Container'
 
 import AppBar from '../../components/AppBar'
 // import api from '../../utils/api'
 import { IDay } from '../../interfaces/IDay'
 import Entry from '../../components/Entry'
-const Day = ({ dayId }: { dayId: string }) => {
+
+type Props = {
+  dayId?: string
+  path: string
+}
+
+const Day: FunctionComponent<Props> = ({ dayId }: Props) => {
   const [day, setDay] = useState<IDay | null>(null)
   useEffect(() => {
     //   api.getDay(dayId).then(result => {

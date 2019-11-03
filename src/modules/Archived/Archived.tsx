@@ -10,9 +10,9 @@ import { Store } from '../../store'
 // } from '../../store/reducers/archived'
 import AppBar from '../../components/AppBar'
 import Container from '../../components/Container'
-import { RouterProps } from '@reach/router'
 import { IEntry } from '../../interfaces/IEntry'
 import { IDay } from '../../interfaces/IDay'
+import { RouterProps } from '../../interfaces/IRouter'
 
 const Archived: FunctionComponent<RouterProps> = () => {
   const pageEndRef = useRef<HTMLDivElement>(null)

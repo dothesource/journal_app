@@ -7,8 +7,9 @@ import Elevated from '../../components/Elevated'
 import MaterialIcon from '../../components/MaterialIcon'
 import useDebounce from '../../utils/use_debounce'
 // import api from '../../utils/api'
-import { navigate, RouterProps } from '@reach/router'
+import { navigate } from '@reach/router'
 import { IEntry } from '../../interfaces/IEntry'
+import { RouterProps } from '../../interfaces/IRouter'
 
 const SearchBar = styled(Elevated)`
   height: 24px;
