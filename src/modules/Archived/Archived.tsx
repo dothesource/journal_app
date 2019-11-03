@@ -1,19 +1,7 @@
-import React, {
-  useEffect,
-  useRef,
-  useContext,
-  FunctionComponent,
-  useMemo
-} from 'react'
+import React, { useEffect, useRef, useContext, FunctionComponent } from 'react'
 // import api from '../../utils/api'
 import Day from '../../components/Day'
 import { Store } from '../../store'
-// import {
-//   archivedDaysActions,
-//   deleteActions,
-//   updateArchivedActions,
-//   unArchiveActions
-// } from '../../store/reducers/archived'
 import AppBar from '../../components/AppBar'
 import Container from '../../components/Container'
 import { IEntry } from '../../interfaces/IEntry'
@@ -29,7 +17,9 @@ const Archived: FunctionComponent<RouterProps> = () => {
   const archivedEntriesDays = arrayIsValid(days)
     ? days.filter(d => d.entries.some(e => e.archived_at !== undefined))
     : []
-  // useMemo(() => {
+
+  // TODO: see if its possible to use memo here somehow
+  //  useMemo(() => {
   //   if (arrayIsValid(days))
   //     return days.filter(d => d.entries.some(e => e.archived_at !== undefined))
   //   else return []
