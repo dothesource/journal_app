@@ -14,10 +14,10 @@ function FooterBar(
   },
   ref
 ) {
-  const inputRef = useRef()
+  const inputRef = useRef<HTMLInputElement>(null)
   useImperativeHandle(ref, () => ({
     focus: () => {
-      inputRef.current.focus()
+      if (inputRef) inputRef.current!.focus()
     }
   }))
   const onSend = e => {
