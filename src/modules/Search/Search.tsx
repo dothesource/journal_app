@@ -60,7 +60,7 @@ const Search: FunctionComponent<RouterProps> = () => {
           : d.entries
       return [...prev, ...filtered]
     }, [])
-    console.log(filteredEntries)
+
     setEntries(filteredEntries)
   }, [days, query])
 

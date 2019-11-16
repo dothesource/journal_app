@@ -28,6 +28,7 @@ const Day: FunctionComponent<Props> = ({ dayId }: Props) => {
     dispatch
   } = useContext(Store)
   const day: IDay = days.find((d: IDay) => d.id === dayId)
+
   const updateEntryText = (entry: IEntry, text: string) =>
     actionUpdateEntry({ entry, text: text }, dispatch)
   // useEffect(() => {
@@ -37,9 +38,9 @@ const Day: FunctionComponent<Props> = ({ dayId }: Props) => {
   //   })
   // }, [day])
 
-  const entries = day.entries
+  const entries = day ? day.entries : []
   const filteredEntries = arrayIsValid(entries)
-    ? entries.filter(entry => entry.archived_at !== undefined)
+    ? entries.filter(entry => !entry.archived_at)
     : []
   // useMemo(() => {
   //   if (arrayIsValid(entries)) {
