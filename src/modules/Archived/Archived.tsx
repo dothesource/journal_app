@@ -8,6 +8,7 @@ import { IEntry } from '../../interfaces/IEntry'
 import { IDay } from '../../interfaces/IDay'
 import { RouterProps } from '../../interfaces/IRouter'
 import { arrayIsValid } from '../../utils/generic'
+import { actionDeleteEntry } from '../../store/reducers/days'
 
 const Archived: FunctionComponent<RouterProps> = () => {
   const pageEndRef = useRef<HTMLDivElement>(null)
@@ -40,13 +41,7 @@ const Archived: FunctionComponent<RouterProps> = () => {
   }, [dispatch])
 
   const deleteEntry = (entry: IEntry) => {
-    // dispatch(deleteActions.init())
-    // api
-    //   .deleteEntry(entry)
-    //   .then(day => {
-    //     dispatch(deleteActions.success(day))
-    //   })
-    //   .catch(e => dispatch(deleteActions.failure(e)))
+    actionDeleteEntry(entry, dispatch)
   }
 
   const updateEntryText = async (entry: IEntry, text: string) => {

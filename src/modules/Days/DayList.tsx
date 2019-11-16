@@ -3,11 +3,25 @@ import Day from '../../components/Day'
 import { arrayIsValid } from '../../utils/generic'
 import { IDay } from '../../interfaces/IDay'
 
-const DayList = ({ days, ...props }: { days: IDay[]; [key: string]: any }) => {
+const DayList = ({
+  days,
+  showArchived = false,
+  ...props
+}: {
+  days: IDay[]
+  showArchived?: boolean
+  [key: string]: any
+}) => {
   return (
     <Fragment>
       {arrayIsValid(days) &&
-        days.map(day => <Day key={`day-${day.id}`} day={day} {...props} />)}
+        days
+          .filter(
+            day =>
+              arrayIsValid(day.entries) &&
+              arrayIsValid(day.entries.filter(e => !e.archived_at))
+          )
+          .map(day => <Day key={`day-${day.id}`} day={day} {...props} />)}
     </Fragment>
   )
 }

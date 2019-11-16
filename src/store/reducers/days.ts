@@ -12,6 +12,9 @@ export const actionUpdateEntry = createActionFunction(UPDATE_ENTRY)
 const ARCHIVE_ENTRY = 'ARCHIVE_ENTRY'
 export const actionArchiveEntry = createActionFunction(ARCHIVE_ENTRY)
 
+const DELETE_ENTRY = 'DELETE_ENTRY'
+export const actionDeleteEntry = createActionFunction(DELETE_ENTRY)
+
 function archiveEntry(entry: IEntry, days: IDay[]) {
   const days_for_update = [...days]
   const day_for_update = days_for_update.find(day => day.id === entry.day_id)
@@ -21,6 +24,19 @@ function archiveEntry(entry: IEntry, days: IDay[]) {
     else throw new Error(`archive entry - entry with id ${entry.id} not found`)
   } else {
     throw new Error(`archive entry - day with id ${entry.day_id} not found `)
+  }
+  return days_for_update
+}
+
+function deleteEntry(entry: IEntry, days: IDay[]) {
+  const days_for_update = [...days]
+  const day_for_update = days_for_update.find(day => day.id === entry.day_id)
+  if (day_for_update) {
+    day_for_update.entries = day_for_update.entries.filter(
+      e => e.id !== entry.id
+    )
+  } else {
+    throw new Error(`delete entry - day with id ${entry.day_id} not found `)
   }
   return days_for_update
 }
@@ -41,6 +57,11 @@ export function days_reducer(state: any, action: any) {
       return {
         ...state,
         days: archiveEntry(action.payload, state.days)
+      }
+    case DELETE_ENTRY:
+      return {
+        ...state,
+        days: deleteEntry(action.payload, state.days)
       }
     default:
       return state
