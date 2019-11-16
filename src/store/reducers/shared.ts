@@ -3,6 +3,7 @@ import { arrayIsValid, uuidv4, last } from '../../utils/generic'
 import moment from 'moment'
 import { IEntry } from '../../interfaces/IEntry'
 import { IDay } from '../../interfaces/IDay'
+import { db } from '../../model/database'
 
 export function updateDay(day, days) {
   const daysForUpdate = [...days]
@@ -27,9 +28,12 @@ export function updateEntry(
   const dayToUpdate = daysForUpdate.find(d => d.id === newEntry.day_id)
   if (dayToUpdate) {
     const entryToUpdate = dayToUpdate.entries.find(e => e.id === newEntry.id)
-    if (entryToUpdate) entryToUpdate.text = text
+    if (entryToUpdate) {
+      entryToUpdate.text = text
+      db.table("days").update(dayToUpdate.id, { entries: dayToUpdate.entries })
+    }
     else throw new Error('entry not found')
-  }
+  } else throw new Error('day not found')
   return daysForUpdate
 }
 
@@ -59,16 +63,20 @@ export function addEntry(entryText: string, days: IDay[]) {
   }
   if (!arrayIsValid(days)) {
     const newDayId = uuidv4()
+    const newDay = {
+      id: newDayId,
+      entries: [{ ...entry, day_id: newDayId }],
+      datetime: new Date(),
+      created_at: new Date(),
+      updated_at: new Date(),
+      title: moment().format('DD/MM/YYYY')
+    }
     daysForUpdate = [
-      {
-        id: newDayId,
-        entries: [{ ...entry, day_id: newDayId }],
-        datetime: new Date(),
-        created_at: new Date(),
-        updated_at: new Date(),
-        title: moment().format('DD/MM/YYYY')
-      }
+      newDay
     ]
+    db.table('days')
+      .add(newDay)
+      .then((day) => console.log(day))
   } else {
     daysForUpdate = [...days]
     const mostRecentDay = last(daysForUpdate) as IDay
@@ -78,15 +86,21 @@ export function addEntry(entryText: string, days: IDay[]) {
       moment().isSame(moment(mostRecentDay.datetime), 'day')
     ) {
       dayToUpdate = mostRecentDay
+      dayToUpdate.entries.push({ ...entry, day_id: dayToUpdate.id })
+      db.table("days").update(dayToUpdate.id, { entries: dayToUpdate.entries })
     } else {
       dayToUpdate = createDay({})
+      db.table('days')
+        .add(dayToUpdate)
+        .then((day) => console.log(day))
     }
     // const dayToUpdate = daysForUpdate.find(d => d.id === entry.day_id)
-    if (dayToUpdate) {
-      dayToUpdate.entries.push({ ...entry, day_id: dayToUpdate.id })
-    } else {
-      throw Error('day not found')
-    }
+    // if (dayToUpdate) {
+    // dayToUpdate.entries.push({ ...entry, day_id: dayToUpdate.id })
+    // db.table("days").update(dayToUpdate.id, { entries: dayToUpdate.entries })
+    // } else {
+    //   throw Error('day not found')
+    // }
   }
   return daysForUpdate
 }

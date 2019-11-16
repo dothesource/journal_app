@@ -12,7 +12,8 @@ import Loader from 'react-loader-spinner'
 import {
   actionAddEntry,
   actionUpdateEntry,
-  actionArchiveEntry
+  actionArchiveEntry,
+  actionLoadDaysSuccess
 } from '../../store/reducers/days'
 import DayList from './DayList'
 import AppBar from '../../components/AppBar'
@@ -22,6 +23,8 @@ import Footer from './Footer'
 
 import { IEntry } from '../../interfaces/IEntry'
 import { RouterProps } from '../../interfaces/IRouter'
+import Dexie from 'dexie';
+import { db } from '../../model/database'
 
 const NEW_ENTRY_DELAY = 5 * 60 * 1000
 
@@ -66,20 +69,16 @@ const Days: FunctionComponent<RouterProps> = () => {
     }
   }
 
-  // TODO: useeffect to load days from indexedDB
-  // useEffect(() => {
-  //   const getDays = async () => {
-  //     dispatch(daysActions.init())
-  //     indexedDBThing
-  //       .getDays()
-  //       .then(days => {
-  //         dispatch(daysActions.success(days))
-  //         pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
-  //       })
-  //       .catch(e => dispatch(daysActions.failure(e)))
-  //   }
-  //   getDays()
-  // }, [dispatch])
+  useEffect(() => {
+    const getDays = async () => {
+      db.table("days").toArray().then(days => {
+        console.log(days)
+        actionLoadDaysSuccess(days, dispatch)
+      })
+    }
+
+    getDays()
+  }, [dispatch])
 
   const updatePreviousEntry = () => {
     const lastDay = last(days)
@@ -153,11 +152,15 @@ const Days: FunctionComponent<RouterProps> = () => {
       pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
   }
 
+  const clearDB = () => {
+    db.table("days").clear()
+  }
+
   return (
     <div>
       <AppBar
         title="Entries"
-        actions={[{ onClick: addEmptyEntry, iconName: 'add' }]}
+        actions={[{ onClick: addEmptyEntry, iconName: 'add' },{onClick: clearDB, iconName: "delete"}]}
       />
       <Container>
         {daysLoading ? (
@@ -165,8 +168,8 @@ const Days: FunctionComponent<RouterProps> = () => {
             <Loader type="ThreeDots" color="#282c34" height="100" width="100" />
           </SelfCentered>
         ) : (
-          <DayList days={days} archiveEntry={archiveEntry} />
-        )}
+            <DayList days={days} archiveEntry={archiveEntry} />
+          )}
 
         <div style={{ float: 'left', clear: 'both' }} ref={pageEndRef} />
         <Footer

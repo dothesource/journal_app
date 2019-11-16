@@ -10,8 +10,10 @@ import { arrayIsValid } from '../../utils/generic'
 import {
   actionDeleteEntry,
   actionUpdateEntry,
-  actionUnarchiveEntry
+  actionUnarchiveEntry,
+  actionLoadDaysSuccess
 } from '../../store/reducers/days'
+import { db } from '../../model/database';
 
 const Archived: FunctionComponent<RouterProps> = () => {
   const pageEndRef = useRef<HTMLDivElement>(null)
@@ -30,6 +32,15 @@ const Archived: FunctionComponent<RouterProps> = () => {
   // }, [days])
 
   useEffect(() => {
+    const getDays = async () => {
+      db.table("days").toArray().then(days => {
+        console.log(days)
+        actionLoadDaysSuccess(days, dispatch)
+      })
+    }
+    if (!arrayIsValid(days)) {
+      getDays()
+    }
     // const getArchivedEntriesDays = async () => {
     //   dispatch(archivedDaysActions.init())
     //   api
