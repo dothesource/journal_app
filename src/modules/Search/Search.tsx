@@ -52,12 +52,11 @@ const Search: FunctionComponent<RouterProps> = () => {
 
   useEffect(() => {
     const filteredEntries = days.reduce((prev: IEntry[], d: IDay) => {
-      const filtered =
-        query && query.length > 0
-          ? d.entries.filter(e =>
-              e.text.toLowerCase().includes(query.toLowerCase())
-            )
-          : d.entries
+      const filtered = d.entries.filter(
+        e =>
+          !e.archived_at &&
+          (!query || e.text.toLowerCase().includes(query.toLowerCase()))
+      )
       return [...prev, ...filtered]
     }, [])
 
