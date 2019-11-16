@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useContext, FunctionComponent } from 'react'
-// import api from '../../utils/api'
 import Day from '../../components/Day'
 import { Store } from '../../store'
 import AppBar from '../../components/AppBar'
@@ -8,7 +7,11 @@ import { IEntry } from '../../interfaces/IEntry'
 import { IDay } from '../../interfaces/IDay'
 import { RouterProps } from '../../interfaces/IRouter'
 import { arrayIsValid } from '../../utils/generic'
-import { actionDeleteEntry } from '../../store/reducers/days'
+import {
+  actionDeleteEntry,
+  actionUpdateEntry,
+  actionUnarchiveEntry
+} from '../../store/reducers/days'
 
 const Archived: FunctionComponent<RouterProps> = () => {
   const pageEndRef = useRef<HTMLDivElement>(null)
@@ -45,23 +48,11 @@ const Archived: FunctionComponent<RouterProps> = () => {
   }
 
   const updateEntryText = async (entry: IEntry, text: string) => {
-    // dispatch(updateArchivedActions.init())
-    // api
-    //   .updateArchivedEntry(entry, text)
-    //   .then(entry => {
-    //     dispatch(updateArchivedActions.success({ entry, text }))
-    //   })
-    //   .catch(e => dispatch(updateArchivedActions.failure(e)))
+    actionUpdateEntry({ entry, text }, dispatch)
   }
 
   const unarchiveEntry = (entry: IEntry) => {
-    // dispatch(unArchiveActions.init())
-    // api
-    //   .unArchiveEntry(entry)
-    //   .then(day => {
-    //     dispatch(unArchiveActions.success(day))
-    //   })
-    //   .catch(e => unArchiveActions.failure(e))
+    actionUnarchiveEntry(entry, dispatch)
   }
 
   return (
