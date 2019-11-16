@@ -41,17 +41,6 @@ const Archived: FunctionComponent<RouterProps> = () => {
     if (!arrayIsValid(days)) {
       getDays()
     }
-    // const getArchivedEntriesDays = async () => {
-    //   dispatch(archivedDaysActions.init())
-    //   api
-    //     .getArchivedDays()
-    //     .then(days => {
-    //       dispatch(archivedDaysActions.success(days))
-    //       if(pageEndRef) pageEndRef.current!.scrollIntoView({ behavior: 'smooth' })
-    //     })
-    //     .catch(e => dispatch(archivedDaysActions.failure(e)))
-    // }
-    // getArchivedEntriesDays()
   }, [dispatch])
 
   const deleteEntry = (entry: IEntry) => {

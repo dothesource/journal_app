@@ -72,7 +72,7 @@ const Days: FunctionComponent<RouterProps> = () => {
   useEffect(() => {
     const getDays = async () => {
       db.table("days").toArray().then(days => {
-        console.log(days)
+        // console.log(days)
         actionLoadDaysSuccess(days, dispatch)
       })
     }
@@ -160,7 +160,7 @@ const Days: FunctionComponent<RouterProps> = () => {
     <div>
       <AppBar
         title="Entries"
-        actions={[{ onClick: addEmptyEntry, iconName: 'add' },{onClick: clearDB, iconName: "delete"}]}
+        actions={[{ onClick: addEmptyEntry, iconName: 'add' }, { onClick: clearDB, iconName: "delete" }]}
       />
       <Container>
         {daysLoading ? (

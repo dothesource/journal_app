@@ -17,6 +17,9 @@ import { IEntry } from '../../interfaces/IEntry'
 import { RouterProps } from '../../interfaces/IRouter'
 import { Store } from '../../store'
 import { IDay } from '../../interfaces/IDay'
+import { db } from '../../model/database';
+import { actionLoadDaysSuccess } from '../../store/reducers/days';
+import { arrayIsValid } from '../../utils/generic';
 
 const SearchBar = styled(Elevated)`
   height: 24px;
@@ -39,8 +42,8 @@ const SearchInput = styled.input`
 
 const Search: FunctionComponent<RouterProps> = () => {
   const {
-    state: { days }
-    // dispatch
+    state: { days },
+    dispatch
   } = useContext(Store)
   const [query, setQuery] = useState('')
 
@@ -62,6 +65,18 @@ const Search: FunctionComponent<RouterProps> = () => {
 
     setEntries(filteredEntries)
   }, [days, query])
+
+  useEffect(() => {
+    const getDays = async () => {
+      db.table("days").toArray().then(days => {
+        console.log(days)
+        actionLoadDaysSuccess(days, dispatch)
+      })
+    }
+    if (!arrayIsValid(days)) {
+      getDays()
+    }
+  }, [dispatch])
 
   return (
     <div>
