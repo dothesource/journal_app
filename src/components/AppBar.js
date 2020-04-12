@@ -19,6 +19,10 @@ const AppBarIcon = styled(MaterialIcon)`
   color: white;
   padding: 16px;
   cursor: pointer;
+  
+  &:hover {    
+    color: rgba(256, 256, 256, 0.5);
+  }  
 `
 
 const AppBarTitle = styled.div`

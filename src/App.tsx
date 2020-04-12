@@ -6,8 +6,10 @@ import Day from './modules/Day'
 import Days from './modules/Days'
 import Search from './modules/Search'
 import { StoreProvider } from './store'
+// import logo from './logo.svg';
+// import './App.css';
 
-const App = () => {
+const App: React.FC = () => {
   return (
     <StoreProvider>
       <DrawerNav>

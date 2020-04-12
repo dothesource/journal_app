@@ -1,122 +1,103 @@
-import React, { useState, useEffect, useRef, useContext } from 'react'
-import api from '../../utils/api'
+import React, {
+  FunctionComponent,
+  useState,
+  useEffect,
+  useRef,
+  useContext
+} from 'react'
 import { last } from '../../utils/generic'
 import useKeyPress from '../../utils/use_key_press'
 import { Store } from '../../store'
 import Loader from 'react-loader-spinner'
 import {
-  daysActions,
-  saveActions,
-  updateActions,
-  archiveActions
+  actionAddEntry,
+  actionUpdateEntry,
+  actionArchiveEntry,
+  actionLoadDaysSuccess
 } from '../../store/reducers/days'
 import DayList from './DayList'
 import AppBar from '../../components/AppBar'
 import Container from '../../components/Container'
 import styled from 'styled-components'
 import Footer from './Footer'
+
+import { IEntry } from '../../interfaces/IEntry'
+import { RouterProps } from '../../interfaces/IRouter'
+import Dexie from 'dexie';
+import { db } from '../../model/database'
+
 const NEW_ENTRY_DELAY = 5 * 60 * 1000
 
 const SelfCentered = styled.div`
   align-self: center;
 `
 
-const Days = () => {
+const Days: FunctionComponent<RouterProps> = () => {
   const {
     state: { days, daysLoading },
     dispatch
   } = useContext(Store)
-  const pageEndRef = useRef()
-  const inputRef = useRef()
+  const pageEndRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLDivElement>(null)
   const [shouldCreateNewEntry, setShouldCreateNewEntry] = useState(true)
   const [currentEntry, setCurrentEntry] = useState('')
 
-  const handleInputChange = event => {
+  const handleInputChange = (event: any) => {
     setCurrentEntry(event.target.value)
   }
 
-  const saveEntry = async () => {
-    dispatch(saveActions.init())
-    return new Promise(resolve => {
-      api
-        .saveEntry(currentEntry)
-        .then(day => {
-          dispatch(saveActions.success(day))
-          setCurrentEntry('')
-          inputRef.current.focus()
-          pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
-          setShouldCreateNewEntry(false)
-          resolve()
-        })
-        .catch(e => dispatch(saveActions.failure(e)))
-    })
+  const saveEntry = () => {
+    actionAddEntry(currentEntry, dispatch)
+    setCurrentEntry('')
+    if (inputRef) inputRef.current!.focus()
+    else console.log('no input ref')
+    if (pageEndRef) pageEndRef.current!.scrollIntoView({ behavior: 'smooth' })
+    else console.log('no page end ref')
+    setShouldCreateNewEntry(false)
   }
 
-  const updateEntryText = (entry, text) => {
-    dispatch(updateActions.init())
-    return new Promise(async (resolve, reject) => {
-      api
-        .updateEntry(entry, text)
-        .then(() => {
-          dispatch(updateActions.success({ entry, text }))
-          resolve()
-        })
-        .catch(e => {
-          dispatch(updateActions.failure(e))
-          reject(e)
-        })
-    })
+  const updateEntryText = (entry: IEntry, text: string) => {
+    actionUpdateEntry({ entry, text }, dispatch)
   }
 
-  const archiveEntry = entry => {
-    dispatch(archiveActions.init())
-    api
-      .archiveEntry(entry)
-      .then(day => {
-        dispatch(archiveActions.success(day))
-        const last_day = last(days)
-        const last_entry = !!last_day ? last(last_day.entries) : undefined
-        if (last_entry !== undefined && entry.id === last_entry.id) {
-          setShouldCreateNewEntry(true)
-        }
-      })
-      .catch(e => dispatch(archiveActions.failure(e)))
+  const archiveEntry = (entry: IEntry) => {
+    actionArchiveEntry(entry, dispatch)
+    const last_day = last(days)
+    const last_entry = !!last_day ? last(last_day.entries) : undefined
+    if (last_entry !== undefined && entry.id === last_entry.id) {
+      setShouldCreateNewEntry(true)
+    }
   }
 
   useEffect(() => {
     const getDays = async () => {
-      dispatch(daysActions.init())
-      api
-        .getDays()
-        .then(days => {
-          dispatch(daysActions.success(days))
-          pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
-        })
-        .catch(e => dispatch(daysActions.failure(e)))
+      db.table("days").toArray().then(days => {
+        // console.log(days)
+        actionLoadDaysSuccess(days, dispatch)
+      })
     }
+
     getDays()
   }, [dispatch])
 
-  const updatePreviousEntry = async () => {
+  const updatePreviousEntry = () => {
     const lastDay = last(days)
     if (lastDay !== undefined) {
       const recentDayEntries = lastDay.entries
       const recentEntry = last(recentDayEntries)
       if (recentEntry !== undefined) {
-        await updateEntryText(
-          recentEntry,
-          `${recentEntry.text}\n${currentEntry}`
-        )
+        updateEntryText(recentEntry, `${recentEntry.text}\n${currentEntry}`)
         setCurrentEntry('')
-        inputRef.current.focus()
-        pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
+        if (inputRef) inputRef.current!.focus()
+        if (pageEndRef)
+          pageEndRef.current!.scrollIntoView({ behavior: 'smooth' })
         return
       }
     }
     saveEntry()
   }
 
-  const timeOutRef = useRef(null)
+  const timeOutRef = useRef<any>(null)
   const delayNewEntry = () => {
     if (timeOutRef.current) {
       clearTimeout(timeOutRef.current)
@@ -147,7 +128,7 @@ const Days = () => {
     }
   }
 
-  const _handleKeyPress = e => {
+  const _handleKeyPress = (e: any) => {
     if (shouldCreateNewEntry === false) {
       setShouldCreateNewEntry(false)
       delayNewEntry()
@@ -166,17 +147,20 @@ const Days = () => {
   }
 
   const addEmptyEntry = () => {
-    saveEntry().then(() => {
-      if (pageEndRef.current)
-        pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
-    })
+    saveEntry()
+    if (pageEndRef.current)
+      pageEndRef.current.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  const clearDB = () => {
+    db.table("days").clear()
   }
 
   return (
     <div>
       <AppBar
         title="Entries"
-        actions={[{ onClick: addEmptyEntry, iconName: 'add' }]}
+        actions={[{ onClick: addEmptyEntry, iconName: 'add' }, { onClick: clearDB, iconName: "delete" }]}
       />
       <Container>
         {daysLoading ? (
@@ -184,12 +168,8 @@ const Days = () => {
             <Loader type="ThreeDots" color="#282c34" height="100" width="100" />
           </SelfCentered>
         ) : (
-          <DayList
-            days={days}
-            updateEntryText={updateEntryText}
-            archiveEntry={archiveEntry}
-          />
-        )}
+            <DayList days={days} archiveEntry={archiveEntry} />
+          )}
 
         <div style={{ float: 'left', clear: 'both' }} ref={pageEndRef} />
         <Footer

@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 
 const SideBarContainer = styled.aside`
   position: fixed;
@@ -42,89 +41,14 @@ const SideBar = ({
   className,
   width = 300
 }) => {
-  useEffect(() => {
-    clearAllBodyScrollLocks()
-  }, [visible])
-
-  const [identifier, setIdentifier] = useState(null)
-  const [currentX, setCurrentX] = useState(null)
-  const [startX, setStartX] = useState(null)
-  const [isClicking, setIsClicking] = useState(false)
-  const [isDragging, setIsDragging] = useState(false)
-  const isTouching = identifier !== null
-
-  const onStart = ev => {
-    if (!isTouching && !!ev.targetTouches && ev.targetTouches.length > 0) {
-      const touch = ev.targetTouches[0]
-      setIdentifier(touch.identifier)
-      setStartX(touch.clientX)
-      setCurrentX(touch.clientX)
-    } else if (!isClicking) {
-      setIsClicking(true)
-      setStartX(ev.clientX)
-      setCurrentX(ev.clientX)
-    }
-    if (visible && body) {
-      disableBodyScroll(body.current)
-    }
-  }
-
-  const onMove = ev => {
-    if (isTouching && ev.targetTouches && ev.targetTouches.length > 0) {
-      for (let ind = 0; ind < ev.targetTouches.length; ind++) {
-        // we only care about the finger that we are tracking
-        if (ev.targetTouches[ind].identifier === identifier) {
-          setCurrentX(ev.targetTouches[ind].clientX)
-          break
-        }
-      }
-    } else if (isClicking) {
-      setCurrentX(ev.clientX)
-      setIsDragging(true)
-    }
-  }
-
-  const onEnd = e => {
-    const open_boundry = isTouching ? 100 : 20
-    const diff = startX != null ? currentX - startX : 0
-    if (!visible && diff > open_boundry) {
-      setVisible(true)
-    } else if (visible && diff < -open_boundry) {
-      setVisible(false)
-    }
-    if (isTouching) {
-      setIdentifier(null)
-      setStartX(null)
-      setCurrentX(null)
-      setIsDragging(false)
-    } else if (isClicking && isDragging) {
-      setStartX(null)
-      setCurrentX(null)
-      setIsClicking(false)
-      setIsDragging(false)
-    }
-  }
-
-  const body = useRef(null)
-
-  const events = {
-    onTouchStart: onStart,
-    onMouseDown: onStart,
-    onMouseMove: onMove,
-    onTouchMove: onMove,
-    onMouseUp: onEnd,
-    onTouchEnd: onEnd
-  }
-
   return (
-    <div ref={body}>
+    <div>
       <Container
         onClick={e => {
           if (visible) {
             e.stopPropagation()
           }
         }}
-        {...events}
       >
         <SideBarContainer width={width} visible={visible} className={className}>
           {sidebarContent}
@@ -140,7 +64,6 @@ const SideBar = ({
             e.stopPropagation()
           }
         }}
-        {...events}
       />
     </div>
   )

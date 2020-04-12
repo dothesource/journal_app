@@ -3,8 +3,9 @@ import Card, { CardActions, CardActionIcons } from '@material/react-card'
 import '@material/react-card/dist/card.css'
 import TextareaAutosize from 'react-textarea-autosize'
 import useDebounce from '../utils/use_debounce'
-import MaterialIcon from '../components/MaterialIcon'
+import MaterialIcon from './MaterialIcon'
 import styled from 'styled-components'
+import { IEntry } from '../interfaces/IEntry'
 
 const CardIcon = styled(MaterialIcon)`
   color: grey;
@@ -26,6 +27,18 @@ const TextArea = styled(TextareaAutosize)`
   font-family: Roboto;
   font-size: 16px;
 `
+
+interface EntryProps {
+  entry: IEntry
+  deleteEntry?: Function
+  updateEntryText?: Function
+  archiveEntry?: Function
+  unarchiveEntry?: Function
+  isArchived?: boolean
+  noActions?: boolean
+  entryOnClick?: Function
+}
+
 const Entry = ({
   entry,
   deleteEntry,
@@ -35,47 +48,56 @@ const Entry = ({
   isArchived,
   noActions,
   entryOnClick
-}) => {
+}: EntryProps) => {
   const [focused, setFocused] = useState(false)
-  const inputRef = useRef(null)
+  const inputRef = useRef<HTMLTextAreaElement>(null)
   const focusTextArea = () => {
-    inputRef.current.focus()
+    if (inputRef) inputRef.current!.focus()
   }
   const [text, setText] = useState(entry.text)
   const debouncedTextEdit = useDebounce(text, 500)
 
   useEffect(() => {
-    if (debouncedTextEdit && text !== entry.text && focused) {
-      updateEntryText(entry, debouncedTextEdit)
+    if (
+      debouncedTextEdit &&
+      text !== entry.text &&
+      focused &&
+      updateEntryText
+    ) {
+      updateEntryText(entry, text)
     }
-  }, [debouncedTextEdit, entry, focused, text, updateEntryText])
+  }, [debouncedTextEdit, entry, focused, isArchived, text, updateEntryText])
 
   useEffect(() => {
     if (entry.text !== text && focused === false) {
       setText(entry.text)
     }
-  }, [entry.text, text, focused])
+  }, [entry.text, focused, text])
+
   const onFocus = () => {
     setFocused(true)
   }
+
   const onBlur = () => {
     setFocused(false)
   }
 
-  const onUnArchive = e => {
+  const onUnArchive = (e: any) => {
     e.stopPropagation()
     e.preventDefault()
-    unarchiveEntry(entry)
+    if (unarchiveEntry) unarchiveEntry(entry)
   }
-  const onDelete = e => {
+
+  const onDelete = (e: any) => {
     e.stopPropagation()
     e.preventDefault()
-    deleteEntry(entry)
+    if (deleteEntry) deleteEntry(entry)
   }
-  const onArchive = e => {
+
+  const onArchive = (e: any) => {
     e.stopPropagation()
     e.preventDefault()
-    archiveEntry(entry)
+    if (archiveEntry) archiveEntry(entry)
   }
 
   const cardActionButtons = () => {
@@ -93,13 +115,15 @@ const Entry = ({
   }
 
   return (
-    <EntryCard onClick={entryOnClick ? entryOnClick : focusTextArea}>
+    <EntryCard
+      onClick={e => (entryOnClick ? entryOnClick(e) : focusTextArea())}
+    >
       <TextArea
         onFocus={onFocus}
         onBlur={onBlur}
         inputRef={inputRef}
         useCacheForDOMMeasurements
-        onChange={({ target: { value } }) => {
+        onChange={({ target: { value } }: any) => {
           setText(value)
         }}
         value={text}

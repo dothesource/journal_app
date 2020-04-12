@@ -1,4 +1,4 @@
-export default function createAsyncAction(name) {
+export function createAsyncAction(name) {
   const caps = name.toUpperCase()
   const init_action = `FETCH_${caps}_INIT`
   const success_action = `FETCH_${caps}_SUCCESS`
@@ -17,6 +17,15 @@ export default function createAsyncAction(name) {
     failure: error => ({
       type: failure_action,
       error
+    })
+  }
+}
+
+export function createActionFunction(name) {
+  return (payload, dispatch) => {
+    dispatch({
+      type: name,
+      payload
     })
   }
 }
