@@ -5,7 +5,7 @@
   "dependencies": {
     "@callstack/async-storage": "^2.0.3",
     "@material/react-card": "^0.11.0",
-    "@reach/router": "^1.2.1",
+    "@reach/router": "^1.3.4",
     "body-scroll-lock": "^2.6.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
